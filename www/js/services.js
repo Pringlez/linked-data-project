@@ -1,0 +1,1 @@
+angular.module('linked-data-project.services', []);
