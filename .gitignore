@@ -4,3 +4,6 @@
 node_modules/
 platforms/
 plugins/
+server/node_modules/
+server/energyusage.json
+server/greenhousegases.json
