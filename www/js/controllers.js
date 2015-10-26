@@ -53,19 +53,20 @@ angular.module('linked-data-project.controllers', [])
         
         // If not a number then set searchID to 1
         if(isNaN(parseFloat(searchID)) && !isFinite(searchID)){
-            searchID = 1;
+            alert('ID is a number!');
         }
-        
-        // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
-        $http.get('http://192.168.1.102:8000/get-d1/' + searchID).then(function(resp) {
-            $scope.dataID = resp.data.ID;
-            $scope.dataCountry = resp.data.Country;
-            $scope.dataPollutant = resp.data.Pollutant;
-            $scope.dataYear = resp.data.Year;
-            $scope.dataValue = resp.data.Value;
-        }, function(err) {
-            alert('Error with DB');
-        })
+        else{
+            // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
+            $http.get('http://192.168.1.102:8000/get-d1/' + searchID).then(function(resp) {
+                $scope.dataID = resp.data.ID;
+                $scope.dataCountry = resp.data.Country;
+                $scope.dataPollutant = resp.data.Pollutant;
+                $scope.dataYear = resp.data.Year;
+                $scope.dataValue = resp.data.Value;
+            }, function(err) {
+                alert('Error with DB');
+            })
+        }
     };
 })
 
@@ -103,16 +104,17 @@ angular.module('linked-data-project.controllers', [])
         
         // If not a number then set searchID to 1
         if(isNaN(parseFloat(searchID)) && !isFinite(searchID)){
-            searchID = 1;
+            alert('ID is a number!');
         }
-        
-        // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
-        $http.get('http://192.168.1.102:8000/get-d2/' + searchID).then(function(resp) {
-            $scope.dataID = resp.data.ID;
-            $scope.dataTime = resp.data.Time;
-            $scope.dataDemand = resp.data.Demand;
-        }, function(err) {
-            alert('Error with DB');
-        })
+        else{
+            // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
+            $http.get('http://192.168.1.102:8000/get-d2/' + searchID).then(function(resp) {
+                $scope.dataID = resp.data.ID;
+                $scope.dataTime = resp.data.Time;
+                $scope.dataDemand = resp.data.Demand;
+            }, function(err) {
+                alert('Error with DB');
+            })
+        }
     };
 });

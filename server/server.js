@@ -1,7 +1,10 @@
 // Import required modules
 var express = require('express');
 var fs = require('fs');
+// Database
 var sqlite3 = require('sqlite3').verbose();
+// Cors (Cross-origin resource sharing)
+var cors = require('cors');
 
 var os = require('os');
 var ifaces = os.networkInterfaces();
@@ -30,6 +33,8 @@ var port = 8000;
 
 // Create a HTTP server
 var app = express();
+// Enable cors, allows cross site resource sharing to serve requests
+app.use(cors());
 
 // JSON format files
 var data1 = JSON.parse(fs.readFileSync('greenhousegases.json', 'utf8'));
@@ -90,18 +95,22 @@ db.serialize(function() {
     });*/
  });
 
+// Message to user
 app.get('/', function(req, res) {
     res.json({ message: 'Linked-Data-API Working!' });
 });
 
+// Get all dataset 1
 app.get('/get-d1', function(req, res) {
     res.json(data1);
 });
 
+// Get all dataset 2
 app.get('/get-d2', function(req, res){
 	res.json(data2);
 });
 
+// Get data by ID, dataset 1
 app.get('/get-d1/:id', function(req, res){
     db.serialize(function(){
         db.each(
@@ -113,6 +122,7 @@ app.get('/get-d1/:id', function(req, res){
     });
 });
 
+// Get data by ID, dataset 2
 app.get('/get-d2/:id', function(req, res){
 	db.serialize(function(){
         db.each(
@@ -124,6 +134,7 @@ app.get('/get-d2/:id', function(req, res){
     });
 });
 
+// Delete by ID in dataset 1
 app.get('/del-d1/:id', function(req, res){
     var gas = new Gas(req.params.id);
     db.serialize(function(){
@@ -139,6 +150,7 @@ app.get('/del-d1/:id', function(req, res){
     });
 });
 
+// Delete by ID in dataset 2
 app.get('/del-d2/:id', function(req, res){
 	var energy = new Energy(req.params.id);
     db.serialize(function(){
@@ -154,16 +166,20 @@ app.get('/del-d2/:id', function(req, res){
     });
 });
 
+// Add to dataset 1 by pushing to json file
 app.post('/add-d1/', function(req, res){
 	data1.push(req.body.addition);
 	res.json(data1);
 });
 
+// Add to dataset 2 by pushing to json file
 app.post('/add-d2/', function(req, res){
 	data2.push(req.body.addition);
 	res.json(data2);
 });
 
+// Set ip, port of server
 app.listen(port, ip);
 
+// Display info of the server
 console.log("Web Service running on IP: " + ip + " Port: " + port);

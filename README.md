@@ -6,7 +6,7 @@ Project Details
 0. The back-end will eventually be built in NodeJS
 0. I plan to link the NodeJS back-end with a CounchDB document database, and maybe sync that database with a client-side PouchDB database
 
-During development I'll use the sqlite3 module to build a basic database to load the datasets into memory
+During development I'll use the sqlite3 module to build a basic database to load the datasets into memory to serve the front-end application.
 
 
 Installation
@@ -23,17 +23,20 @@ npm install
 Usage
 -----
 
-Naviagate to the root project directory, run the application by running the following command
+Naviagate to the root project directory, run the application by running the following command. You could also add the option
+'--lab' to the command below to test on both on iOS and Android.
 
 ```
 ionic serve
 ```
 
-Run the NodeJS back-end by running the following command in the 'server' directory. The server should select your local
-ip address.
+Server
+------
+
+Run the NodeJS back-end by running the following command in the 'server' directory. Make sure to run the 'npm install' to install the dependencies.
 
 ```
 node server.js
 ```
 
-It might ask you to select an ip address, 'localhost' should work fine
+The server will select your local ip address to listen on, the port is 8000.
