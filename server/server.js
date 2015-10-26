@@ -3,6 +3,29 @@ var express = require('express');
 var fs = require('fs');
 var sqlite3 = require('sqlite3').verbose();
 
+var os = require('os');
+var ifaces = os.networkInterfaces();
+
+var validIPs = [];
+
+Object.keys(ifaces).forEach(function (ifname) {
+  var alias = 0;
+
+  ifaces[ifname].forEach(function (iface) {
+    // Skip internal IPs
+    if ('IPv4' !== iface.family || iface.internal !== false) {
+      return;
+    }
+    // This interface has multiple ipv4 addresses
+    if (alias >= 1) {
+      validIPs.push(iface.address);
+    } else {
+      validIPs.push(iface.address);
+    }
+  });
+});
+
+var ip = validIPs[0];
 var port = 8000;
 
 // Create a HTTP server
@@ -141,6 +164,6 @@ app.post('/add-d2/', function(req, res){
 	res.json(data2);
 });
 
-var server = app.listen(port);
+app.listen(port, ip);
 
-console.log("Web Service running on localhost:" + port);
+console.log("Web Service running on IP: " + ip + " Port: " + port);

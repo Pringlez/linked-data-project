@@ -17,50 +17,57 @@ angular.module('linked-data-project', ['ionic', 'linked-data-project.controllers
     
     $stateProvider
 
+    // Main state, loads menu template
     .state('app', {
-    url: '/app',
-    abstract: true,
-    templateUrl: 'templates/menu.html',
-    controller: 'AppCtrl'
-  })
-
-  .state('app.chart-1', {
-    url: '/chart-1',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/chart-1.html'
-      }
-    }
-  })
-
-  .state('app.chart-2', {
-      url: '/chart-2',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/chart-2.html'
-        }
-      }
-    })
-    .state('app.chartlists', {
-      url: '/chartlists',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/chartlists.html',
-          controller: 'ChartlistsCtrl'
-        }
-      }
+        url: '/app',
+        abstract: true,
+        templateUrl: 'templates/menu.html',
+        controller: 'AppCtrl'
     })
 
-  .state('app.chart', {
-    url: '/chartlists/:chartlistId',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/chartlist.html',
-        controller: 'ChartlistCtrl'
-      }
-    }
-  });
+    // Display chart 1 state
+    .state('app.chart-1', {
+        url: '/chart-1',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/chart-1.html'
+            }
+        }
+    })
 
+    // Display chart 2 state
+    .state('app.chart-2', {
+        url: '/chart-2',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/chart-2.html'
+            }
+        }
+    })
+    
+    // Dataset 1 state
+    .state('app.dataset-1', {
+        url: '/dataset-1',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/dataset-1.html',
+                controller: 'DataSet1'
+            }
+        }
+    })
+    
+    // Dataset 2 state
+    .state('app.dataset-2', {
+        url: '/dataset-2',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/dataset-2.html',
+                controller: 'DataSet2'
+            }
+        }
+    })
+
+    // If state unknown, load chart 1 state
     $urlRouterProvider.otherwise('/app/chart-1');
 
 });

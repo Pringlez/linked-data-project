@@ -29,7 +29,8 @@ Naviagate to the root project directory, run the application by running the foll
 ionic serve
 ```
 
-Run the NodeJS back-end by running
+Run the NodeJS back-end by running the following command in the 'server' directory. The server should select your local
+ip address.
 
 ```
 node server.js

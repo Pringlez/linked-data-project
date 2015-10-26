@@ -1,1 +1,13 @@
 /* Basic framework of CSS */
+body {
+  cursor: url('http://ionicframework.com/img/finger.png'), auto;
+}    
+p {
+  text-align: center;
+  margin-bottom: 40px !important;
+}
+.spinner svg {
+  width: 19% !important;
+  height: 85px !important;
+  margin-top: 2%;
+}
