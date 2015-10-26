@@ -4,7 +4,7 @@
     <ion-list>
     <ion-item ng-repeat="item in items"></ion-item>
     </ion-list>-->
-    <div class="list">
+    <!--<div class="list">
         <label class="item item-input item-stacked-label">
             <span class="input-label">ID</span>
             <input type="tel" id="dataID" name="dataID" placeholder="" ng-model="settings.dataID">
@@ -26,6 +26,10 @@
             <input type="text" placeholder="" ng-model="dataValue">
         </label>
     </div>
-    <button class="button button-block button-positive" ng-click="getData(settings)">Get Data</button>
+    <button class="button button-block button-positive" ng-click="getData(settings)">Get Data</button>-->
+    <div id="container" class="transition">
+        <div id="content"></div>
+        <button class="button button-block button-positive" ng-click="render()">Get Data</button>
+    </div>
   </ion-content>
 </ion-view>
