@@ -9,6 +9,8 @@ var cors = require('cors');
 var os = require('os');
 var ifaces = os.networkInterfaces();
 
+var qs = require('querystring');
+
 var validIPs = [];
 
 Object.keys(ifaces).forEach(function (ifname) {
@@ -85,7 +87,8 @@ db.serialize(function() {
     // Close finish insert statement
 	stmt2.finalize();
     console.log("Dataset Energy Loaded!");
-  
+    
+    // Print records test
     /*db.each("SELECT * FROM Gases", function(err, row) {
       console.log("ID :" + row.ID + " Pollutant: " + row.Pollutant);
     });*/
@@ -113,9 +116,7 @@ app.get('/get-d2', function(req, res){
 // Get data by ID, dataset 1
 app.get('/get-d1/:id', function(req, res){
     db.serialize(function(){
-        db.each(
-            "SELECT * FROM Gases WHERE ID = " + req.params.id, 
-            function(err, row) {
+        db.each("SELECT * FROM Gases WHERE ID = " + req.params.id, function(err, row) {
                 var gasinfo  = new Gas(row.ID , row.Country, row.Pollutant, row.Year, row.Value);
                 return res.json(gasinfo);
         });
@@ -125,9 +126,7 @@ app.get('/get-d1/:id', function(req, res){
 // Get data by ID, dataset 2
 app.get('/get-d2/:id', function(req, res){
 	db.serialize(function(){
-        db.each(
-            "SELECT * FROM Energy WHERE ID = " + req.params.id, 
-            function(err, row) {
+        db.each("SELECT * FROM Energy WHERE ID = " + req.params.id, function(err, row) {
                 var energyinfo = new Energy(row.ID , row.Time, row.Demand);
                 return res.json(energyinfo);
         });
@@ -141,10 +140,10 @@ app.get('/del-d1/:id', function(req, res){
         var stmt = db.prepare("DELETE FROM Gases WHERE ID = ?");
         stmt.run(gas.ID, function(err, row){
             if (this.changes == 1){
-                return res.json("OK");
+                return res.json("Delete Ok");
             }
             else{
-                return res.json("Error");
+                return res.json("Delete Failed");
             }	
         });
     });
@@ -157,25 +156,127 @@ app.get('/del-d2/:id', function(req, res){
         var stmt = db.prepare("DELETE FROM Energy WHERE ID = ?");
         stmt.run(energy.ID, function(err, row){
             if (this.changes == 1){
-                return res.json("OK");
+                return res.json("Delete Ok");
             }
             else{
-                return res.json("Error");
+                return res.json("Delete Failed");
             }	
         });
     });
 });
 
-// Add to dataset 1 by pushing to json file
 app.post('/add-d1/', function(req, res){
-	data1.push(req.body.addition);
-	res.json(data1);
+    if (req.method == 'POST') {
+        var body = '';
+        req.on('data', function (data) {
+            body += data;
+            // 1MB post limit
+            if (body.length > 1e6)
+                req.connection.destroy();
+        });
+        req.on('end', function () {
+            var post = qs.parse(body);
+            body = JSON.parse(body);
+            db.serialize(function(){
+                var stmt = db.prepare("INSERT INTO Gases(Country, Pollutant, Year, Value) VALUES (?,?,?,?)");
+                stmt.run(body.country, body.pollutant, body.year, body.value, function(err, row){
+                    if (this.changes == 1){
+                        return res.json("Insert Ok");
+                    }
+                    else{
+                        return res.json("Insert Failed");
+                    }	
+                });
+            }); 
+        });
+    }
 });
 
-// Add to dataset 2 by pushing to json file
 app.post('/add-d2/', function(req, res){
-	data2.push(req.body.addition);
-	res.json(data2);
+    if (req.method == 'POST') {
+        var body = '';
+        req.on('data', function (data) {
+            body += data;
+            // 1MB post limit
+            if (body.length > 1e6)
+                req.connection.destroy();
+        });
+        req.on('end', function () {
+            var post = qs.parse(body);
+            body = JSON.parse(body);
+            db.serialize(function(){
+                var stmt = db.prepare("INSERT INTO Energy(Time, Demand) VALUES (?,?)");
+                stmt.run(body.time, body.demand, function(err, row){
+                    if (this.changes == 1){
+                        return res.json("Insert Ok");
+                    }
+                    else{
+                        return res.json("Insert Failed");
+                    }	
+                });
+            });
+        });
+    }
+});
+
+app.post('/update-d1/', function(req, res){
+    if (req.method == 'POST') {
+        var body = '';
+        req.on('data', function (data) {
+            body += data;
+            // 1MB post limit
+            if (body.length > 1e6)
+                req.connection.destroy();
+        });
+        req.on('end', function () {
+            var post = qs.parse(body);
+            body = JSON.parse(body);
+            db.serialize(function(){
+                var stmt = db.prepare("UPDATE Gases"
+						+ " SET Country = ?, Pollutant = ?, Year = ?, Value = ?"
+						+ " WHERE"
+						+ " ID = ?");
+                stmt.run(body.country, body.pollutant, body.year, body.value, body.id, function(err, row){
+                    if (this.changes == 1){
+                        return res.json("Update Ok");
+                    }
+                    else{
+                        return res.json("Update Failed");
+                    }	
+                });
+            }); 
+        });
+    }
+});
+
+app.post('/update-d2/', function(req, res){
+    if (req.method == 'POST') {
+        var body = '';
+        req.on('data', function (data) {
+            body += data;
+            // 1MB post limit
+            if (body.length > 1e6)
+                req.connection.destroy();
+        });
+        req.on('end', function () {
+            var post = qs.parse(body);
+            body = JSON.parse(body);
+            db.serialize(function(){
+                var stmt = db.prepare("UPDATE Energy"
+						+ " SET Time = ?, Demand = ?"
+						+ " WHERE"
+						+ " ID = ?");
+                stmt.run(body.time, body.demand, body.id, function(err, row){
+                    if (this.changes == 1){
+                        return res.json("Update Ok");
+                    }
+                    else{
+                        return res.json("Update Failed");
+                    }	
+                });
+            }); 
+        });
+    }
 });
 
 // Set ip, port of server

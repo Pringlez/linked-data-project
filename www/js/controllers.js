@@ -1,51 +1,9 @@
 angular.module('linked-data-project.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $timeout) {
 })
 
-.controller('DataSet1', function($scope, $ionicActionSheet, $ionicBackdrop, $http, $timeout) {
-
-    /*$scope.show = function() {
-
-    // Show the action sheet
-    var hideSheet = $ionicActionSheet.show({
-        buttons: [
-            { text: '<b>Search</b>' },
-            { text: '<b>Insert</b>' },
-            { text: '<b>Update</b>' },
-            { text: '<b>Delete</b>' }
-        ],
-        cancelText: '<b>Cancel<b>',
-        cancel: function() {
-            return false;
-        },
-        buttonClicked: function(index) {
-            state = index;
-            return true;
-        }
-    });
-
-    $timeout(function() {
-     hideSheet();
-    }, 15000);
-
-    };*/
-    
-    /*$scope.action = function() {
-        $ionicBackdrop.retain();
-        $timeout(function() {
-          $ionicBackdrop.release();
-        }, 1000);
-    };*/
-    
-    /*$scope.doRefresh = function() {
-        $http.get('http://localhost:8000')
-        .success(function(newItems) {
-        })
-        .finally(function() {
-            $scope.$broadcast('scroll.refreshComplete');
-        });
-    };*/
+.controller('ChartCtrl1', function($scope, $timeout) {
     
     var chart1,
         chart2,
@@ -162,15 +120,150 @@ angular.module('linked-data-project.controllers', [])
                 '<div class="graph"></div>' +
             '</div>';
 
-        $("#content").html(html);
+        $("#content1").html(html);
 
         chart1 = createSummaryChart('#chart1', summary);
         chart2 = createCountryBreakdownChart('#chart2', getCountryBreakdownForYear(selectedYear));
     }
+})
+
+.controller('ChartCtrl2', function($scope, $timeout) {
     
-    $scope.getData = function(settings) {
+    var chart1,
+        chart2,
+        selectedYear = 2010;
+
+    // Functions to create the individual charts involved in the dashboard
+    function createSummaryChart(selector, dataset) {
         
-        var searchID = settings.dataID;
+        var data = {
+                "xScale": "ordinal",
+                "yScale": "linear",
+                "main": dataset
+            },
+
+            options = {
+                "axisPaddingLeft": 0,
+                "paddingLeft": 20,
+                "paddingRight": 0,
+                "axisPaddingRight": 0,
+                "axisPaddingTop": 5,
+                "yMin": 9,
+                "yMax": 40,
+                "interpolation": "linear",
+                "click": yearSelectionHandler
+            },
+
+            legend = d3.select(selector).append("svg")
+                .attr("class", "legend")
+                .selectAll("g")
+                .data(dataset)
+                .enter()
+                .append("g")
+                .attr("transform", function (d, i) {
+                    return "translate(" + (64 + (i * 84)) + ", 0)";
+                });
+
+        legend.append("rect")
+            .attr("width", 18)
+            .attr("height", 18)
+            .attr("class", function (d, i) {
+                return 'color' + i;
+            });
+
+        legend.append("text")
+            .attr("x", 24)
+            .attr("y", 9)
+            .attr("dy", ".35em")
+            .text(function (d, i) {
+                return dataset[i].country;
+            });
+
+        return new xChart('line-dotted', data, selector + " .graph", options);
+    }
+
+    function createCountryBreakdownChart(selector, dataset) {
+        
+        var data = {
+                "xScale": "ordinal",
+                "yScale": "linear",
+                "type": "bar",
+                "main": dataset
+            },
+
+            options = {
+                "axisPaddingLeft": 0,
+                "axisPaddingTop": 5,
+                "paddingLeft": 20,
+                "yMin": 8,
+                "yMax": 40
+            };
+
+        return new xChart('bar', data, selector + " .graph", options);
+    }
+
+    // Data selection handlers
+    function yearSelectionHandler(d, i) {
+        
+        selectedYear = d.x;
+        var data = {
+            "xScale": "ordinal",
+            "yScale": "linear",
+            "type": "bar",
+            "main": getCountryBreakdownForYear(selectedYear)
+        };
+        $('#chart2>.title').html('Total Medals by Country in ' + selectedYear);
+        chart2.setData(data);
+    }
+
+    // Functions to transform/format the data as required by specific charts
+    function getCountryBreakdownForYear(year) {
+        
+        var result = [];
+        for (var i = 0; i < results[year].length; i++) {
+            result.push({x: results[year][i].Country, y: results[year][i].Total});
+        }
+        return [
+            {
+                "className": ".medals",
+                "data": result
+            }
+        ]
+    }
+
+    // Render the dashboard
+    $scope.render = function() {
+        
+        var html =
+            '<div id="chart3" class="chart chart2">' +
+                '<div class="title">Top 5 Medal Countries</div>' +
+                '<div class="graph"></div>' +
+            '</div>' +
+            '<div id="chart4" class="chart chart2">' +
+                '<div class="title">Total Medals by Country in 2010</div>' +
+                '<div class="graph"></div>' +
+            '</div>';
+
+        $("#content2").html(html);
+
+        chart1 = createSummaryChart('#chart3', summary);
+        chart2 = createCountryBreakdownChart('#chart4', getCountryBreakdownForYear(selectedYear));
+    }
+})
+
+.controller('DataSetCtrl1', function($scope, $http, $timeout) {
+    
+    $scope.form = {
+        'id' : '',
+        'country' : '',
+        'pollutant' : '',
+        'year' : '',
+        'value' : ''
+    };
+    
+    $scope.searchByID = function() {
+        
+        var searchID = $scope.form.id;
         
         // If not a number then set searchID to 1
         if(isNaN(parseFloat(searchID)) && !isFinite(searchID)){
@@ -178,50 +271,62 @@ angular.module('linked-data-project.controllers', [])
         }
         else{
             // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
-            $http.get('http://192.168.1.102:8000/get-d1/' + searchID).then(function(resp) {
-                $scope.dataID = resp.data.ID;
-                $scope.dataCountry = resp.data.Country;
-                $scope.dataPollutant = resp.data.Pollutant;
-                $scope.dataYear = resp.data.Year;
-                $scope.dataValue = resp.data.Value;
+            $http.get('http://192.168.1.187:8000/get-d1/' + searchID).then(function(resp) {
+                $scope.form.id = resp.data.ID;
+                $scope.form.country = resp.data.Country;
+                $scope.form.pollutant = resp.data.Pollutant;
+                $scope.form.year = resp.data.Year;
+                $scope.form.value = resp.data.Value;
             }, function(err) {
                 alert('Error with DB');
             })
         }
     };
+    
+    $scope.insertData = function() {
+        
+        $http.post('http://192.168.1.187:8000/add-d1/', {id : $scope.form.id, country : $scope.form.country, pollutant : $scope.form.pollutant, year : $scope.form.year, value : $scope.form.value}).then(function (res){
+            alert(res.data);
+        });
+        
+    };
+    
+    $scope.updateByID = function() {
+        
+        $http.post('http://192.168.1.187:8000/update-d1/', {id : $scope.form.id, country : $scope.form.country, pollutant : $scope.form.pollutant, year : $scope.form.year, value : $scope.form.value}).then(function (res){
+            alert(res.data);
+        });
+        
+    };
+    
+    $scope.deleteByID = function() {
+        
+        var deleteID = $scope.form.id;
+        
+        // If not a number then set searchID to 1
+        if(isNaN(parseFloat(deleteID)) && !isFinite(deleteID)){
+            alert('ID is a number!');
+        }
+        else{   
+            $http.get('http://192.168.1.187:8000/del-d1/' + deleteID).then(function (res){
+                alert(res.data);
+            });
+        }
+        
+    };
 })
 
-.controller('DataSet2', function($scope, $ionicActionSheet, $http, $timeout) {
+.controller('DataSetCtrl2', function($scope, $http, $timeout) {
     
-    /*$scope.show = function() {
-
-    // Show the action sheet
-    var hideSheet = $ionicActionSheet.show({
-        buttons: [
-            { text: '<b>Search</b>' },
-            { text: '<b>Insert</b>' },
-            { text: '<b>Update</b>' },
-            { text: '<b>Delete</b>' }
-        ],
-        cancelText: '<b>Cancel<b>',
-        cancel: function() {
-            return false;
-        },
-        buttonClicked: function(index) {
-            state = index;
-            return true;
-        }
-    });
-
-    $timeout(function() {
-     hideSheet();
-    }, 15000);
-
-    };*/
+    $scope.form = {
+        'id' : '',
+        'time' : '',
+        'demand' : ''
+    };
     
-    $scope.getData = function(settings) {
+    $scope.searchByID = function() {
         
-        var searchID = settings.dataID;
+        var searchID = $scope.form.id;
         
         // If not a number then set searchID to 1
         if(isNaN(parseFloat(searchID)) && !isFinite(searchID)){
@@ -229,13 +334,45 @@ angular.module('linked-data-project.controllers', [])
         }
         else{
             // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
-            $http.get('http://192.168.1.102:8000/get-d2/' + searchID).then(function(resp) {
-                $scope.dataID = resp.data.ID;
-                $scope.dataTime = resp.data.Time;
-                $scope.dataDemand = resp.data.Demand;
+            $http.get('http://192.168.1.187:8000/get-d2/' + searchID).then(function(resp) {
+                $scope.form.id = resp.data.ID;
+                $scope.form.time = resp.data.Time;
+                $scope.form.demand = resp.data.Demand;
             }, function(err) {
                 alert('Error with DB');
             })
         }
+    };
+    
+    $scope.insertData = function() {
+        
+        $http.post('http://192.168.1.187:8000/add-d2/', {time : $scope.form.time, demand : $scope.form.demand}).then(function (res){
+            alert(res.data);
+        });
+        
+    };
+    
+    $scope.updateByID = function() {
+        
+        $http.post('http://192.168.1.187:8000/update-d2/', {id : $scope.form.id, time : $scope.form.time, demand : $scope.form.demand}).then(function (res){
+            alert(res.data);
+        });
+        
+    };
+    
+    $scope.deleteByID = function() {
+        
+        var deleteID = $scope.form.id;
+        
+        // If not a number then set searchID to 1
+        if(isNaN(parseFloat(deleteID)) && !isFinite(deleteID)){
+            alert('ID is a number!');
+        }
+        else{   
+            $http.get('http://192.168.1.187:8000/del-d2/' + deleteID).then(function (res){
+                alert(res.data);
+            });
+        }
+        
     };
 });

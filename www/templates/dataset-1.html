@@ -1,35 +1,32 @@
 <ion-view view-title="Dataset 1 Area">
   <ion-content>
-    <!--<ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()"></ion-refresher>
-    <ion-list>
-    <ion-item ng-repeat="item in items"></ion-item>
-    </ion-list>-->
-    <!--<div class="list">
+    <div class="list">
         <label class="item item-input item-stacked-label">
             <span class="input-label">ID</span>
-            <input type="tel" id="dataID" name="dataID" placeholder="" ng-model="settings.dataID">
+            <input type="text" name="form.id" placeholder="Search by ID" ng-model="form.id">
         </label>
         <label class="item item-input item-stacked-label">
             <span class="input-label">Country</span>
-            <input type="text" placeholder="" ng-model="dataCountry">
+            <input type="text" name="form.country" placeholder="" ng-model="form.country">
         </label>
         <label class="item item-input item-stacked-label">
             <span class="input-label">Pollutant</span>
-            <input type="text" placeholder="" ng-model="dataPollutant">
+            <input type="text" name="form.pollutant" placeholder="" ng-model="form.pollutant">
         </label>
         <label class="item item-input item-stacked-label">
             <span class="input-label">Year</span>
-            <input type="text" placeholder="" ng-model="dataYear">
+            <input type="text" name="form.year" placeholder="" ng-model="form.year">
         </label>
         <label class="item item-input item-stacked-label">
             <span class="input-label">Value</span>
-            <input type="text" placeholder="" ng-model="dataValue">
+            <input type="text" name="form.value" placeholder="" ng-model="form.value">
         </label>
     </div>
-    <button class="button button-block button-positive" ng-click="getData(settings)">Get Data</button>-->
-    <div id="container" class="transition">
-        <div id="content"></div>
-        <button class="button button-block button-positive" ng-click="render()">Get Data</button>
+    <div class="button-bar">
+      <a class="button button-positive" ng-click="searchByID()">Search</a>
+      <a class="button button-balanced" ng-click="insertData()">Insert</a>
+      <a class="button button-energized" ng-click="updateByID()">Update</a>
+      <a class="button button-assertive" ng-click="deleteByID()">Delete</a>
     </div>
   </ion-content>
 </ion-view>

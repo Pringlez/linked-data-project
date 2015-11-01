@@ -30,7 +30,8 @@ angular.module('linked-data-project', ['ionic', 'linked-data-project.controllers
         url: '/chart-1',
         views: {
             'menuContent': {
-                templateUrl: 'templates/chart-1.html'
+                templateUrl: 'templates/chart-1.html',
+                controller: 'ChartCtrl1'
             }
         }
     })
@@ -40,7 +41,8 @@ angular.module('linked-data-project', ['ionic', 'linked-data-project.controllers
         url: '/chart-2',
         views: {
             'menuContent': {
-                templateUrl: 'templates/chart-2.html'
+                templateUrl: 'templates/chart-2.html',
+                controller: 'ChartCtrl2'
             }
         }
     })
@@ -51,7 +53,7 @@ angular.module('linked-data-project', ['ionic', 'linked-data-project.controllers
         views: {
             'menuContent': {
                 templateUrl: 'templates/dataset-1.html',
-                controller: 'DataSet1'
+                controller: 'DataSetCtrl1'
             }
         }
     })
@@ -62,12 +64,12 @@ angular.module('linked-data-project', ['ionic', 'linked-data-project.controllers
         views: {
             'menuContent': {
                 templateUrl: 'templates/dataset-2.html',
-                controller: 'DataSet2'
+                controller: 'DataSetCtrl2'
             }
         }
     })
 
     // If state unknown, load chart 1 state
-    $urlRouterProvider.otherwise('/app/chart-1');
+    $urlRouterProvider.otherwise('/app/dataset-1');
 
 });

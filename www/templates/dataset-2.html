@@ -1,19 +1,24 @@
 <ion-view view-title="Dataset 2 Area">
   <ion-content>
-      <div class="list">
+    <div class="list">
         <label class="item item-input item-stacked-label">
             <span class="input-label">ID</span>
-            <input type="tel" id="dataID" name="dataID" placeholder="" ng-model="settings.dataID">
+            <input type="text" name="form.id" placeholder="Search by ID" ng-model="form.id">
         </label>
         <label class="item item-input item-stacked-label">
             <span class="input-label">Time</span>
-            <input type="text" placeholder="" ng-model="dataTime">
+            <input type="text" name="form.time" placeholder="" ng-model="form.time">
         </label>
         <label class="item item-input item-stacked-label">
             <span class="input-label">Demand</span>
-            <input type="text" placeholder="" ng-model="dataDemand">
+            <input type="text" name="form.demand" placeholder="" ng-model="form.demand">
         </label>
     </div>
-    <button class="button button-block button-positive" ng-click="getData(settings)">Get Data</button>
+    <div class="button-bar">
+      <a class="button button-positive" ng-click="searchByID()">Search</a>
+      <a class="button button-balanced" ng-click="insertData()">Insert</a>
+      <a class="button button-energized" ng-click="updateByID()">Update</a>
+      <a class="button button-assertive" ng-click="deleteByID()">Delete</a>
+    </div>
   </ion-content>
 </ion-view>
