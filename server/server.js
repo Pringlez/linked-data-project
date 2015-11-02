@@ -31,7 +31,7 @@ Object.keys(ifaces).forEach(function (ifname) {
 });
 
 var ip = validIPs[0];
-var port = 8000;
+var port = 11000;
 
 // Create a HTTP server
 var app = express();

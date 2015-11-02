@@ -253,6 +253,9 @@ angular.module('linked-data-project.controllers', [])
 
 .controller('DataSetCtrl1', function($scope, $http, $timeout) {
     
+    var ip = '192.168.1.134';
+    var port = '11000';
+    
     $scope.form = {
         'id' : '',
         'country' : '',
@@ -271,7 +274,7 @@ angular.module('linked-data-project.controllers', [])
         }
         else{
             // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
-            $http.get('http://192.168.1.187:8000/get-d1/' + searchID).then(function(resp) {
+            $http.get('http://' + ip + ':' + port + '/get-d1/' + searchID).then(function(resp) {
                 $scope.form.id = resp.data.ID;
                 $scope.form.country = resp.data.Country;
                 $scope.form.pollutant = resp.data.Pollutant;
@@ -285,7 +288,7 @@ angular.module('linked-data-project.controllers', [])
     
     $scope.insertData = function() {
         
-        $http.post('http://192.168.1.187:8000/add-d1/', {id : $scope.form.id, country : $scope.form.country, pollutant : $scope.form.pollutant, year : $scope.form.year, value : $scope.form.value}).then(function (res){
+        $http.post('http://' + ip + ':' + port + '/add-d1/', {id : $scope.form.id, country : $scope.form.country, pollutant : $scope.form.pollutant, year : $scope.form.year, value : $scope.form.value}).then(function (res){
             alert(res.data);
         });
         
@@ -293,7 +296,7 @@ angular.module('linked-data-project.controllers', [])
     
     $scope.updateByID = function() {
         
-        $http.post('http://192.168.1.187:8000/update-d1/', {id : $scope.form.id, country : $scope.form.country, pollutant : $scope.form.pollutant, year : $scope.form.year, value : $scope.form.value}).then(function (res){
+        $http.post('http://' + ip + ':' + port + '/update-d1/', {id : $scope.form.id, country : $scope.form.country, pollutant : $scope.form.pollutant, year : $scope.form.year, value : $scope.form.value}).then(function (res){
             alert(res.data);
         });
         
@@ -308,7 +311,7 @@ angular.module('linked-data-project.controllers', [])
             alert('ID is a number!');
         }
         else{   
-            $http.get('http://192.168.1.187:8000/del-d1/' + deleteID).then(function (res){
+            $http.get('http://' + ip + ':' + port + '/del-d1/' + deleteID).then(function (res){
                 alert(res.data);
             });
         }
@@ -317,6 +320,9 @@ angular.module('linked-data-project.controllers', [])
 })
 
 .controller('DataSetCtrl2', function($scope, $http, $timeout) {
+    
+    var ip = '192.168.1.134';
+    var port = '11000';
     
     $scope.form = {
         'id' : '',
@@ -334,7 +340,7 @@ angular.module('linked-data-project.controllers', [])
         }
         else{
             // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
-            $http.get('http://192.168.1.187:8000/get-d2/' + searchID).then(function(resp) {
+            $http.get('http://' + ip + ':' + port + '/get-d2/' + searchID).then(function(resp) {
                 $scope.form.id = resp.data.ID;
                 $scope.form.time = resp.data.Time;
                 $scope.form.demand = resp.data.Demand;
@@ -346,7 +352,7 @@ angular.module('linked-data-project.controllers', [])
     
     $scope.insertData = function() {
         
-        $http.post('http://192.168.1.187:8000/add-d2/', {time : $scope.form.time, demand : $scope.form.demand}).then(function (res){
+        $http.post('http://' + ip + ':' + port + '/add-d2/', {time : $scope.form.time, demand : $scope.form.demand}).then(function (res){
             alert(res.data);
         });
         
@@ -354,7 +360,7 @@ angular.module('linked-data-project.controllers', [])
     
     $scope.updateByID = function() {
         
-        $http.post('http://192.168.1.187:8000/update-d2/', {id : $scope.form.id, time : $scope.form.time, demand : $scope.form.demand}).then(function (res){
+        $http.post('http://' + ip + ':' + port + '/update-d2/', {id : $scope.form.id, time : $scope.form.time, demand : $scope.form.demand}).then(function (res){
             alert(res.data);
         });
         
@@ -369,7 +375,7 @@ angular.module('linked-data-project.controllers', [])
             alert('ID is a number!');
         }
         else{   
-            $http.get('http://192.168.1.187:8000/del-d2/' + deleteID).then(function (res){
+            $http.get('http://' + ip + ':' + port + '/del-d2/' + deleteID).then(function (res){
                 alert(res.data);
             });
         }
