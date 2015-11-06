@@ -3,257 +3,27 @@ angular.module('linked-data-project.controllers', [])
 .controller('AppCtrl', function($scope, $timeout) {
 })
 
-.controller('ChartCtrl1', function($scope, $timeout) {
-    
-    var chart1,
-        chart2,
-        selectedYear = 2010;
-
-    // Functions to create the individual charts involved in the dashboard
-    function createSummaryChart(selector, dataset) {
-        
-        var data = {
-                "xScale": "ordinal",
-                "yScale": "linear",
-                "main": dataset
-            },
-
-            options = {
-                "axisPaddingLeft": 0,
-                "paddingLeft": 20,
-                "paddingRight": 0,
-                "axisPaddingRight": 0,
-                "axisPaddingTop": 5,
-                "yMin": 9,
-                "yMax": 40,
-                "interpolation": "linear",
-                "click": yearSelectionHandler
-            },
-
-            legend = d3.select(selector).append("svg")
-                .attr("class", "legend")
-                .selectAll("g")
-                .data(dataset)
-                .enter()
-                .append("g")
-                .attr("transform", function (d, i) {
-                    return "translate(" + (64 + (i * 84)) + ", 0)";
-                });
-
-        legend.append("rect")
-            .attr("width", 18)
-            .attr("height", 18)
-            .attr("class", function (d, i) {
-                return 'color' + i;
-            });
-
-        legend.append("text")
-            .attr("x", 24)
-            .attr("y", 9)
-            .attr("dy", ".35em")
-            .text(function (d, i) {
-                return dataset[i].country;
-            });
-
-        return new xChart('line-dotted', data, selector + " .graph", options);
-    }
-
-    function createCountryBreakdownChart(selector, dataset) {
-        
-        var data = {
-                "xScale": "ordinal",
-                "yScale": "linear",
-                "type": "bar",
-                "main": dataset
-            },
-
-            options = {
-                "axisPaddingLeft": 0,
-                "axisPaddingTop": 5,
-                "paddingLeft": 20,
-                "yMin": 8,
-                "yMax": 40
-            };
-
-        return new xChart('bar', data, selector + " .graph", options);
-    }
-
-    // Data selection handlers
-    function yearSelectionHandler(d, i) {
-        
-        selectedYear = d.x;
-        var data = {
-            "xScale": "ordinal",
-            "yScale": "linear",
-            "type": "bar",
-            "main": getCountryBreakdownForYear(selectedYear)
-        };
-        $('#chart2>.title').html('Total Medals by Country in ' + selectedYear);
-        chart2.setData(data);
-    }
-
-    // Functions to transform/format the data as required by specific charts
-    function getCountryBreakdownForYear(year) {
-        
-        var result = [];
-        for (var i = 0; i < results[year].length; i++) {
-            result.push({x: results[year][i].Country, y: results[year][i].Total});
-        }
-        return [
-            {
-                "className": ".medals",
-                "data": result
-            }
-        ]
-    }
-
-    // Render the dashboard
+.controller('ChartCtrl1', function($scope, $timeout, PouchdbService) {
     $scope.render = function() {
-        
-        var html =
-            '<div id="chart1" class="chart chart2">' +
-                '<div class="title">Top 5 Medal Countries</div>' +
-                '<div class="graph"></div>' +
-            '</div>' +
-            '<div id="chart2" class="chart chart2">' +
-                '<div class="title">Total Medals by Country in 2010</div>' +
-                '<div class="graph"></div>' +
-            '</div>';
-
-        $("#content1").html(html);
-
-        chart1 = createSummaryChart('#chart1', summary);
-        chart2 = createCountryBreakdownChart('#chart2', getCountryBreakdownForYear(selectedYear));
+        PouchdbService.getGreenhouseGases().then(function(chartdata){
+            var html = '<h3 style="margin-left: 100px; margin-top: 10px;">Greenhouse Gases</h3><figure style="width: 450px; height: 500px;" id="gaschart1"></figure>';
+            $("#content1").html(html);
+            new xChart('line-dotted', chartdata.data, '#gaschart1', chartdata.data.options);
+        });
     }
 })
 
-.controller('ChartCtrl2', function($scope, $timeout) {
-    
-    var chart1,
-        chart2,
-        selectedYear = 2010;
+.controller('ChartCtrl2', function($scope, $timeout, PouchdbService) {
 
-    // Functions to create the individual charts involved in the dashboard
-    function createSummaryChart(selector, dataset) {
-        
-        var data = {
-                "xScale": "ordinal",
-                "yScale": "linear",
-                "main": dataset
-            },
+})
 
-            options = {
-                "axisPaddingLeft": 0,
-                "paddingLeft": 20,
-                "paddingRight": 0,
-                "axisPaddingRight": 0,
-                "axisPaddingTop": 5,
-                "yMin": 9,
-                "yMax": 40,
-                "interpolation": "linear",
-                "click": yearSelectionHandler
-            },
+.controller('ChartCtrl3', function($scope, $timeout) {
 
-            legend = d3.select(selector).append("svg")
-                .attr("class", "legend")
-                .selectAll("g")
-                .data(dataset)
-                .enter()
-                .append("g")
-                .attr("transform", function (d, i) {
-                    return "translate(" + (64 + (i * 84)) + ", 0)";
-                });
-
-        legend.append("rect")
-            .attr("width", 18)
-            .attr("height", 18)
-            .attr("class", function (d, i) {
-                return 'color' + i;
-            });
-
-        legend.append("text")
-            .attr("x", 24)
-            .attr("y", 9)
-            .attr("dy", ".35em")
-            .text(function (d, i) {
-                return dataset[i].country;
-            });
-
-        return new xChart('line-dotted', data, selector + " .graph", options);
-    }
-
-    function createCountryBreakdownChart(selector, dataset) {
-        
-        var data = {
-                "xScale": "ordinal",
-                "yScale": "linear",
-                "type": "bar",
-                "main": dataset
-            },
-
-            options = {
-                "axisPaddingLeft": 0,
-                "axisPaddingTop": 5,
-                "paddingLeft": 20,
-                "yMin": 8,
-                "yMax": 40
-            };
-
-        return new xChart('bar', data, selector + " .graph", options);
-    }
-
-    // Data selection handlers
-    function yearSelectionHandler(d, i) {
-        
-        selectedYear = d.x;
-        var data = {
-            "xScale": "ordinal",
-            "yScale": "linear",
-            "type": "bar",
-            "main": getCountryBreakdownForYear(selectedYear)
-        };
-        $('#chart2>.title').html('Total Medals by Country in ' + selectedYear);
-        chart2.setData(data);
-    }
-
-    // Functions to transform/format the data as required by specific charts
-    function getCountryBreakdownForYear(year) {
-        
-        var result = [];
-        for (var i = 0; i < results[year].length; i++) {
-            result.push({x: results[year][i].Country, y: results[year][i].Total});
-        }
-        return [
-            {
-                "className": ".medals",
-                "data": result
-            }
-        ]
-    }
-
-    // Render the dashboard
-    $scope.render = function() {
-        
-        var html =
-            '<div id="chart3" class="chart chart2">' +
-                '<div class="title">Top 5 Medal Countries</div>' +
-                '<div class="graph"></div>' +
-            '</div>' +
-            '<div id="chart4" class="chart chart2">' +
-                '<div class="title">Total Medals by Country in 2010</div>' +
-                '<div class="graph"></div>' +
-            '</div>';
-
-        $("#content2").html(html);
-
-        chart1 = createSummaryChart('#chart3', summary);
-        chart2 = createCountryBreakdownChart('#chart4', getCountryBreakdownForYear(selectedYear));
-    }
 })
 
 .controller('DataSetCtrl1', function($scope, $http, $timeout) {
     
-    var ip = '192.168.1.134';
+    var ip = 'localhost';
     var port = '11000';
     
     $scope.form = {
@@ -321,7 +91,7 @@ angular.module('linked-data-project.controllers', [])
 
 .controller('DataSetCtrl2', function($scope, $http, $timeout) {
     
-    var ip = '192.168.1.134';
+    var ip = 'localhost';
     var port = '11000';
     
     $scope.form = {

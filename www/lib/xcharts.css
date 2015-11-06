@@ -6,8 +6,8 @@
   stroke-width: 0;
 }
 .xchart circle {
-  stroke: #fff;
-  stroke-width: 8px;
+  stroke: #FFF;
+  stroke-width: 3px;
 }
 .xchart .axis .domain {
   fill: none;
@@ -30,10 +30,9 @@
 .xchart .color0 rect,
 .xchart .color0 circle {
   fill: #3880aa;
-  stroke: #3880aa;
 }
 .xchart .color0 .fill {
-  /*fill: rgba(56, 128, 170, 0.1);*/
+  fill: rgba(56, 128, 170, 0.1);
 }
 .xchart .color0.comp .line {
   stroke: #89bbd8;
@@ -57,10 +56,9 @@
 .xchart .color1 rect,
 .xchart .color1 circle {
   fill: #4da944;
-  stroke: #4da944;
 }
 .xchart .color1 .fill {
-  /*fill: rgba(77, 169, 68, 0.1);*/
+  fill: rgba(77, 169, 68, 0.1);
 }
 .xchart .color1.comp .line {
   stroke: #9dd597;
@@ -84,10 +82,9 @@
 .xchart .color2 rect,
 .xchart .color2 circle {
   fill: #f26522;
-  stroke: #f26522;
 }
 .xchart .color2 .fill {
-  /*fill: rgba(242, 101, 34, 0.1);*/
+  fill: rgba(242, 101, 34, 0.1);
 }
 .xchart .color2.comp .line {
   stroke: #f9b99a;
@@ -111,10 +108,9 @@
 .xchart .color3 rect,
 .xchart .color3 circle {
   fill: #c6080d;
-  stroke: #c6080d;
 }
 .xchart .color3 .fill {
-  /*fill: rgba(198, 8, 13, 0.1);*/
+  fill: rgba(198, 8, 13, 0.1);
 }
 .xchart .color3.comp .line {
   stroke: #f8555a;
@@ -138,10 +134,9 @@
 .xchart .color4 rect,
 .xchart .color4 circle {
   fill: #672d8b;
-  stroke: #672d8b;
 }
 .xchart .color4 .fill {
-  /*fill: rgba(103, 45, 139, 0.1);*/
+  fill: rgba(103, 45, 139, 0.1);
 }
 .xchart .color4.comp .line {
   stroke: #a869ce;
@@ -167,7 +162,7 @@
   fill: #ce1797;
 }
 .xchart .color5 .fill {
-  /*fill: rgba(206, 23, 151, 0.1);*/
+  fill: rgba(206, 23, 151, 0.1);
 }
 .xchart .color5.comp .line {
   stroke: #f075cb;

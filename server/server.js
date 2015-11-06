@@ -1,8 +1,12 @@
 // Import required modules
 var express = require('express');
+var PouchDB = require('pouchdb');
 var fs = require('fs');
 // Database
 var sqlite3 = require('sqlite3').verbose();
+// Create local database
+var nosql = new PouchDB('linked-data-project');
+//var nosql = new PouchDB('http://192.168.1.142/linked-data-project');
 // Cors (Cross-origin resource sharing)
 var cors = require('cors');
 
@@ -30,13 +34,63 @@ Object.keys(ifaces).forEach(function (ifname) {
   });
 });
 
-var ip = validIPs[0];
+//var ip = validIPs[0];
+var ip = 'localhost';
 var port = 11000;
 
 // Create a HTTP server
 var app = express();
 // Enable cors, allows cross site resource sharing to serve requests
 app.use(cors());
+
+// Pouchdb insert test doc
+nosql.put({
+    _id: 'greenhousegases',
+    data: {
+      "xScale": "ordinal",
+      "yScale": "linear",
+      "type": "line",
+      "main": [
+        {
+          "className": ".gases",
+          "data": [
+            {
+              "x": 2007,
+              "y": 68370
+            },
+            {
+              "x": 2008,
+              "y": 68020
+            },
+            {
+              "x": 2009,
+              "y": 62312
+            },
+            {
+              "x": 2010,
+              "y": 61894
+            },
+            {
+              "x": 2011,
+              "y": 57749
+            }
+          ]
+        }
+      ],
+      "options": {
+        "axisPaddingLeft": 0,
+        "paddingLeft": 45,
+        "paddingRight": 0,
+        "axisPaddingRight": 0,
+        "axisPaddingTop": 20,
+        "interpolation": "linear"
+      }
+    }
+}).then(function (response) {
+    console.log('Document Created!');
+}).catch(function (err) {
+    console.log(err);
+});
 
 // JSON format files
 var data1 = JSON.parse(fs.readFileSync('greenhousegases.json', 'utf8'));
@@ -277,6 +331,62 @@ app.post('/update-d2/', function(req, res){
             }); 
         });
     }
+});
+
+// Get all documents
+app.get('/getdocs', function(req, res) {
+    nosql.allDocs({include_docs: true, descending: true}, function(err, doc) {
+        return res.json(doc.rows);
+    }).catch(function (err) {
+        console.log(err);
+    });
+});
+
+// Get document by id
+app.get('/getdoc/:id', function(req, res){
+	nosql.get(req.params.id).then(function (doc) {
+        return res.json(doc);
+    }).catch(function (err) {
+        console.log(err);
+    });
+});
+
+// Add document
+app.get('/adddoc', function(req, res){
+    nosql.put({
+        _id: new Date().toISOString(),
+        title: 'Heroes'
+    }).then(function (response) {
+        return res.json('Add Ok!');
+    }).catch(function (err) {
+        console.log(err);
+    });
+});
+
+// Update document, get request /updatedoc?id=todos&title=example
+app.get('/updatedoc', function(req, res){
+    nosql.get(req.query.id).then(function(doc) {
+        return nosql.put({
+            _id: req.query.id,
+            _rev: doc._rev,
+            title: req.query.title
+        });
+    }).then(function(response) {
+        return res.json('Update Ok!');
+    }).catch(function (err) {
+        console.log(err);
+    });
+});
+
+// Delete document by id
+app.get('/deldoc/:id', function(req, res){
+    nosql.get(req.params.id).then(function(doc) {
+        nosql.remove(doc);
+    }).then(function (result) {
+        return res.json('Delete Ok!');
+    }).catch(function (err) {
+        console.log(err);
+    });
 });
 
 // Set ip, port of server

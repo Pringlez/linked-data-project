@@ -47,6 +47,17 @@ angular.module('linked-data-project', ['ionic', 'linked-data-project.controllers
         }
     })
     
+    // Display chart 3 state
+    .state('app.chart-3', {
+        url: '/chart-3',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/chart-3.html',
+                controller: 'ChartCtrl3'
+            }
+        }
+    })
+    
     // Dataset 1 state
     .state('app.dataset-1', {
         url: '/dataset-1',
