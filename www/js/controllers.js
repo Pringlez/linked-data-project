@@ -6,31 +6,61 @@ angular.module('linked-data-project.controllers', [])
 .controller('ChartCtrl1', function($scope, $timeout, PouchdbService) {
     $scope.render = function() {
         PouchdbService.getGreenhouseGases().then(function(chartdata){
-            var html = '<h3 style="margin-left: 100px; margin-top: 10px;">Greenhouse Gases</h3><figure style="width: 450px; height: 500px;" id="gaschart1"></figure>';
-            $("#content1").html(html);
+            var html = '<h3 style="margin-left: 110px;">Greenhouse Gases</h3><figure style="width: 450px; height: 500px;" id="gaschart1"></figure>';
+            $("#chart1").html(html); 
             new xChart('line-dotted', chartdata, '#gaschart1', chartdata.options);
+        });
+        PouchdbService.getCarbonDioxide().then(function(chartdata){
+            var html = '<h3 style="margin-left: 110px;">Carbon Dioxide</h3><figure style="width: 450px; height: 500px;" id="gaschart2"></figure>';
+            $("#chart2").html(html); 
+            new xChart('line-dotted', chartdata, '#gaschart2', chartdata.options);
+        });
+        PouchdbService.getMethane().then(function(chartdata){
+            var html = '<h3 style="margin-left: 110px;">Methane</h3><figure style="width: 450px; height: 500px;" id="gaschart3"></figure>';
+            $("#chart3").html(html); 
+            new xChart('line-dotted', chartdata, '#gaschart3', chartdata.options);
+        });
+        PouchdbService.getNitrousOxide().then(function(chartdata){
+            var html = '<h3 style="margin-left: 110px;">Nitrous Oxide</h3><figure style="width: 450px; height: 500px;" id="gaschart4"></figure>';
+            $("#chart4").html(html); 
+            new xChart('line-dotted', chartdata, '#gaschart4', chartdata.options);
+        });
+        PouchdbService.getHydrofluoroCarbons().then(function(chartdata){
+            var html = '<h3 style="margin-left: 110px;">HydroFluoro Carbons</h3><figure style="width: 450px; height: 500px;" id="gaschart5"></figure>';
+            $("#chart5").html(html); 
+            new xChart('line-dotted', chartdata, '#gaschart5', chartdata.options);
+        });
+        PouchdbService.getPerfluoroCarbons().then(function(chartdata){
+            var html = '<h3 style="margin-left: 110px;">Perfluoro Carbons</h3><figure style="width: 450px; height: 500px;" id="gaschart6"></figure>';
+            $("#chart6").html(html); 
+            new xChart('line-dotted', chartdata, '#gaschart6', chartdata.options);
+        });
+        PouchdbService.getSulphurHexafluoride().then(function(chartdata){
+            var html = '<h3 style="margin-left: 110px;">Sulphur Hexafluoride</h3><figure style="width: 450px; height: 500px;" id="gaschart7"></figure>';
+            $("#chart7").html(html); 
+            new xChart('line-dotted', chartdata, '#gaschart7', chartdata.options);
         });
     }
 })
 
 .controller('ChartCtrl2', function($scope, $timeout, PouchdbService) {
-    $scope.render = function() {
+    /*$scope.render = function() {
         PouchdbService.getCarbonDioxide().then(function(chartdata){
             var html = '<h3 style="margin-left: 100px; margin-top: 10px;">Carbon Dioxide</h3><figure style="width: 450px; height: 500px;" id="gaschart2"></figure>';
             $("#content2").html(html);
             new xChart('line-dotted', chartdata, '#gaschart2', chartdata.options);
         });
-    }
+    }*/
 })
 
 .controller('ChartCtrl3', function($scope, $timeout, PouchdbService) {
-    $scope.render = function() {
+    /*$scope.render = function() {
         PouchdbService.getMethane().then(function(chartdata){
             var html = '<h3 style="margin-left: 100px; margin-top: 10px;">Methane</h3><figure style="width: 450px; height: 500px;" id="gaschart3"></figure>';
             $("#content3").html(html);
             new xChart('line-dotted', chartdata, '#gaschart3', chartdata.options);
         });
-    }
+    }*/
 })
 
 .controller('DataSetCtrl1', function($scope, $http, $ionicPopup, $timeout) {
