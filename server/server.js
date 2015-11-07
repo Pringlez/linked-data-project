@@ -43,56 +43,20 @@ var app = express();
 // Enable cors, allows cross site resource sharing to serve requests
 app.use(cors());
 
-// Pouchdb insert test doc
+// JSON format files - Couchdb / Pouchdb
+var gases = JSON.parse(fs.readFileSync('gases.json', 'utf8'));
+
+// Load the parsed json into document database
 nosql.put({
-    _id: 'greenhousegases',
-    data: {
-      "xScale": "ordinal",
-      "yScale": "linear",
-      "type": "line",
-      "main": [
-        {
-          "className": ".gases",
-          "data": [
-            {
-              "x": 2007,
-              "y": 68370
-            },
-            {
-              "x": 2008,
-              "y": 68020
-            },
-            {
-              "x": 2009,
-              "y": 62312
-            },
-            {
-              "x": 2010,
-              "y": 61894
-            },
-            {
-              "x": 2011,
-              "y": 57749
-            }
-          ]
-        }
-      ],
-      "options": {
-        "axisPaddingLeft": 0,
-        "paddingLeft": 45,
-        "paddingRight": 0,
-        "axisPaddingRight": 0,
-        "axisPaddingTop": 20,
-        "interpolation": "linear"
-      }
-    }
+    _id: 'gases',
+    data: gases
 }).then(function (response) {
     console.log('Document Created!');
 }).catch(function (err) {
     console.log(err);
 });
 
-// JSON format files
+// JSON format files - sqlite3
 var data1 = JSON.parse(fs.readFileSync('greenhousegases.json', 'utf8'));
 var data2 = JSON.parse(fs.readFileSync('energyusage.json', 'utf8'));
 
