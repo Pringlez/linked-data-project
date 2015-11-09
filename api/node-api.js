@@ -1,40 +1,47 @@
-// Import required modules
+// Import required modules 
+// Express API, os module for system related functions, fs module for filesystem - file read/write
+// Cors module is to allow cross-site resource sharing
 var express = require('express');
-var PouchDB = require('pouchdb');
+var os = require('os');
 var fs = require('fs');
-// Database
-var sqlite3 = require('sqlite3').verbose();
-// Create local database
-var nosql = new PouchDB('linked-data-project');
-//var nosql = new PouchDB('http://192.168.1.142/linked-data-project');
-// Cors (Cross-origin resource sharing)
 var cors = require('cors');
 
-var os = require('os');
+// Databases - RDMS SQLite3 & NoSQL Document DB
+var sqlite3 = require('sqlite3').verbose();
+var pouchdb = require('pouchdb');
+
+// Create local database or remote couchdb instance
+var nosql = new pouchdb('linked-data-project');
+//var nosql = new pouchdb('http://192.168.1.142/linked-data-project');
+
+// Access network interface
 var ifaces = os.networkInterfaces();
-
-var qs = require('querystring');
-
+// Array to store validips later
 var validIPs = [];
 
+// Function to get & store valid IPs host system has - (Ignoring loop back address)
+// I used this for testing on remote node server
 Object.keys(ifaces).forEach(function (ifname) {
-  var alias = 0;
-
-  ifaces[ifname].forEach(function (iface) {
-    // Skip internal IPs
+    var alias = 0;
+    // Loop through 
+    ifaces[ifname].forEach(function (iface) {
+    // Ignoring internal IPs
     if ('IPv4' !== iface.family || iface.internal !== false) {
-      return;
+        return;
     }
     // This interface has multiple ipv4 addresses
     if (alias >= 1) {
-      validIPs.push(iface.address);
+        validIPs.push(iface.address);
     } else {
-      validIPs.push(iface.address);
+        validIPs.push(iface.address);
     }
-  });
+    });
 });
 
+// Use if you wish to test with local valid ips
 //var ip = validIPs[0];
+
+// Set ip & port
 var ip = 'localhost';
 var port = 11000;
 
@@ -60,8 +67,10 @@ nosql.put({
 var data1 = JSON.parse(fs.readFileSync('greenhousegases.json', 'utf8'));
 var data2 = JSON.parse(fs.readFileSync('energyusage.json', 'utf8'));
 
+// Load the database into memory
 var db = new sqlite3.Database(':memory:');
 
+// Object to store data for dataset1
 var Gas = function(ID, Country, Pollutant, Year, Value){
 	this.ID = (ID) ? ID : 0;
 	this.Country = (Country) ? Country : "N/A";
@@ -70,6 +79,7 @@ var Gas = function(ID, Country, Pollutant, Year, Value){
 	this.Value = (Value) ? Value : "0.0";
 }
 
+// Object to store data for dataset2
 var Energy = function(ID, Time, Demand){
 	this.ID = (ID) ? ID : 0;
 	this.Time = (Time) ? Time : "N/A";
@@ -77,13 +87,12 @@ var Energy = function(ID, Time, Demand){
 }
 
 db.serialize(function() {
-    
     // Creating table gases for dataset1
     db.run("CREATE TABLE Gases ("
     + "'ID' INTEGER PRIMARY KEY AUTOINCREMENT, 'Country' VARCHAR(255), 'Pollutant' VARCHAR(255),"
     + "'Year' INTEGER, 'Value' FLOAT)");
     
-    // Pareparing the SQL statement
+    // Preparing the SQL statement - dataset1
     var stmt = db.prepare("INSERT INTO Gases ('Country','Pollutant','Year', 'Value') VALUES (?,?,?,?)");
 	
     // Loop through each element in the first dataset
@@ -96,7 +105,7 @@ db.serialize(function() {
     // Creating table gases for dataset2
     db.run("CREATE TABLE Energy ('ID' INTEGER PRIMARY KEY AUTOINCREMENT, 'Time' VARCHAR(255), 'Demand' VARCHAR(255))");
     
-    // Pareparing the SQL statement
+    // Pareparing the SQL statement - dataset2
     var stmt2 = db.prepare("INSERT INTO Energy ('Time','Demand') VALUES (?,?)");
 	
     // Loop through each element in the first dataset
@@ -121,42 +130,44 @@ app.get('/', function(req, res) {
     res.json({ message: 'Linked-Data-API Working!' });
 });
 
-// Get all dataset 1
+// Get all dataset 1 - return in json format - Will be changed to SQLite3
 app.get('/get-d1', function(req, res) {
     res.json(data1);
 });
 
-// Get all dataset 2
+// Get all dataset 2 - return in json format - Will be changed to SQLite3
 app.get('/get-d2', function(req, res){
 	res.json(data2);
 });
 
-// Get data by ID, dataset 1
+// Get data record by ID, dataset 1 - SQLite3
 app.get('/get-d1/:id', function(req, res){
     db.serialize(function(){
+        // Get record matching id - storing it first in object structure to return as json
         db.each("SELECT * FROM Gases WHERE ID = " + req.params.id, function(err, row) {
-                var gasinfo  = new Gas(row.ID , row.Country, row.Pollutant, row.Year, row.Value);
-                return res.json(gasinfo);
+            var gasinfo  = new Gas(row.ID , row.Country, row.Pollutant, row.Year, row.Value);
+            return res.json(gasinfo);
         });
     });
 });
 
-// Get data by ID, dataset 2
+// Get data record by ID, dataset 2 - SQLite3
 app.get('/get-d2/:id', function(req, res){
 	db.serialize(function(){
+        // Get record matching id - storing it first in object structure to return as json
         db.each("SELECT * FROM Energy WHERE ID = " + req.params.id, function(err, row) {
-                var energyinfo = new Energy(row.ID , row.Time, row.Demand);
-                return res.json(energyinfo);
+            var energyinfo = new Energy(row.ID , row.Time, row.Demand);
+            return res.json(energyinfo);
         });
     });
 });
 
-// Delete by ID in dataset 1
+// Delete record by ID in dataset 1 - SQLite3
 app.get('/del-d1/:id', function(req, res){
-    var gas = new Gas(req.params.id);
+    // Prepare statement to delete by id
     db.serialize(function(){
         var stmt = db.prepare("DELETE FROM Gases WHERE ID = ?");
-        stmt.run(gas.ID, function(err, row){
+        stmt.run(req.params.id, function(err, row){
             if (this.changes == 1){
                 return res.json("Delete Ok");
             }
@@ -167,12 +178,13 @@ app.get('/del-d1/:id', function(req, res){
     });
 });
 
-// Delete by ID in dataset 2
+// Delete record by ID in dataset 2 - SQLite3
 app.get('/del-d2/:id', function(req, res){
-	var energy = new Energy(req.params.id);
+    // Prepare statement to delete by id
     db.serialize(function(){
         var stmt = db.prepare("DELETE FROM Energy WHERE ID = ?");
-        stmt.run(energy.ID, function(err, row){
+        stmt.run(req.params.id, function(err, row){
+            // If statement ran ok, returning message
             if (this.changes == 1){
                 return res.json("Delete Ok");
             }
@@ -183,9 +195,13 @@ app.get('/del-d2/:id', function(req, res){
     });
 });
 
+// Allows users to add new data to the SQLite3 database - dataset1
 app.post('/add-d1/', function(req, res){
+    // Checking if request is a post
     if (req.method == 'POST') {
         var body = '';
+        // Adding data from post to body variable, limiting size of post to 1MB
+        // Potentially stops API abuse, flooding etc
         req.on('data', function (data) {
             body += data;
             // 1MB post limit
@@ -193,7 +209,7 @@ app.post('/add-d1/', function(req, res){
                 req.connection.destroy();
         });
         req.on('end', function () {
-            var post = qs.parse(body);
+            // Parse data from body, then prepare insert statement to pass posted data to database
             body = JSON.parse(body);
             db.serialize(function(){
                 var stmt = db.prepare("INSERT INTO Gases(Country, Pollutant, Year, Value) VALUES (?,?,?,?)");
@@ -210,17 +226,20 @@ app.post('/add-d1/', function(req, res){
     }
 });
 
+// Allows users to add new data to the SQLite3 database - dataset2
 app.post('/add-d2/', function(req, res){
+    // Checking if request is a post
     if (req.method == 'POST') {
         var body = '';
         req.on('data', function (data) {
             body += data;
-            // 1MB post limit
+            // Adding data from post to body variable, limiting size of post to 1MB
+            // Potentially stops API abuse, flooding etc
             if (body.length > 1e6)
                 req.connection.destroy();
         });
         req.on('end', function () {
-            var post = qs.parse(body);
+            // Parse data from body, then prepare insert statement to pass posted data to database
             body = JSON.parse(body);
             db.serialize(function(){
                 var stmt = db.prepare("INSERT INTO Energy(Time, Demand) VALUES (?,?)");
@@ -237,7 +256,9 @@ app.post('/add-d2/', function(req, res){
     }
 });
 
+// Allows users to update data on the SQLite3 database - dataset1
 app.post('/update-d1/', function(req, res){
+    // Checking if request is a post
     if (req.method == 'POST') {
         var body = '';
         req.on('data', function (data) {
@@ -247,13 +268,14 @@ app.post('/update-d1/', function(req, res){
                 req.connection.destroy();
         });
         req.on('end', function () {
-            var post = qs.parse(body);
+            // Parsing the data from the body of the request
             body = JSON.parse(body);
             db.serialize(function(){
                 var stmt = db.prepare("UPDATE Gases"
 						+ " SET Country = ?, Pollutant = ?, Year = ?, Value = ?"
 						+ " WHERE"
 						+ " ID = ?");
+                // Run the update statement & checking to see if it ran ok, returning message
                 stmt.run(body.country, body.pollutant, body.year, body.value, body.id, function(err, row){
                     if (this.changes == 1){
                         return res.json("Update Ok");
@@ -267,7 +289,9 @@ app.post('/update-d1/', function(req, res){
     }
 });
 
+// Allows users to update data on the SQLite3 database - dataset2
 app.post('/update-d2/', function(req, res){
+    // Checking if request is a post
     if (req.method == 'POST') {
         var body = '';
         req.on('data', function (data) {
@@ -277,13 +301,14 @@ app.post('/update-d2/', function(req, res){
                 req.connection.destroy();
         });
         req.on('end', function () {
-            var post = qs.parse(body);
+            // Parsing the data from the body of the request
             body = JSON.parse(body);
             db.serialize(function(){
                 var stmt = db.prepare("UPDATE Energy"
 						+ " SET Time = ?, Demand = ?"
 						+ " WHERE"
 						+ " ID = ?");
+                // Run the update statement & checking to see if it ran ok, returning message
                 stmt.run(body.time, body.demand, body.id, function(err, row){
                     if (this.changes == 1){
                         return res.json("Update Ok");
