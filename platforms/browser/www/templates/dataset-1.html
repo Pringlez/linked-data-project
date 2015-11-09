@@ -1,0 +1,32 @@
+<ion-view view-title="Dataset 1 Area">
+  <ion-content>
+    <div class="list">
+        <label class="item item-input item-stacked-label">
+            <span class="input-label">ID</span>
+            <input type="text" name="form.id" placeholder="Search by ID" ng-model="form.id">
+        </label>
+        <label class="item item-input item-stacked-label">
+            <span class="input-label">Country</span>
+            <input type="text" name="form.country" placeholder="" ng-model="form.country">
+        </label>
+        <label class="item item-input item-stacked-label">
+            <span class="input-label">Pollutant</span>
+            <input type="text" name="form.pollutant" placeholder="" ng-model="form.pollutant">
+        </label>
+        <label class="item item-input item-stacked-label">
+            <span class="input-label">Year</span>
+            <input type="text" name="form.year" placeholder="" ng-model="form.year">
+        </label>
+        <label class="item item-input item-stacked-label">
+            <span class="input-label">Value</span>
+            <input type="text" name="form.value" placeholder="" ng-model="form.value">
+        </label>
+    </div>
+    <div class="button-bar">
+      <a class="button button-positive" ng-click="searchByID()">Search</a>
+      <a class="button button-balanced" ng-click="insertData()">Insert</a>
+      <a class="button button-energized" ng-click="updateByID()">Update</a>
+      <a class="button button-assertive" ng-click="deleteByID()">Delete</a>
+    </div>
+  </ion-content>
+</ion-view>

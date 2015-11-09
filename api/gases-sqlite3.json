@@ -1,0 +1,632 @@
+[
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2007,
+    "Value":68370.74
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2007,
+    "Value":123.756
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2007,
+    "Value":15.593
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Carbon dioxide",
+    "Year":2007,
+    "Value":47213.619
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Methane",
+    "Year":2007,
+    "Value":12364.109
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Nitrous oxide",
+    "Year":2007,
+    "Value":7745.362
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Hydrofluorocarbons",
+    "Year":2007,
+    "Value":850.892
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Perfluorocarbons",
+    "Year":2007,
+    "Value":130.579
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Sulphur hexafluoride",
+    "Year":2007,
+    "Value":66.18
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2007,
+    "Value":3628.085
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2007,
+    "Value":1224.479
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2007,
+    "Value":75.449
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2007,
+    "Value":45159.505
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2007,
+    "Value":18283.222
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2007,
+    "Value":0.383
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2007,
+    "Value":14490.858
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2007,
+    "Value":59.901
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2007,
+    "Value":10263.232
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2007,
+    "Value":14535.211
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2007,
+    "Value":-2701.633
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2007,
+    "Value":5810.303
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2008,
+    "Value":68020.488
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2008,
+    "Value":123.122
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2008,
+    "Value":15.146
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Carbon dioxide",
+    "Year":2008,
+    "Value":47005.718
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Methane",
+    "Year":2008,
+    "Value":12237.966
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Nitrous oxide",
+    "Year":2008,
+    "Value":7640.052
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Hydrofluorocarbons",
+    "Year":2008,
+    "Value":973.059
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Perfluorocarbons",
+    "Year":2008,
+    "Value":106.197
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Sulphur hexafluoride",
+    "Year":2008,
+    "Value":57.496
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2008,
+    "Value":3438.336
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2008,
+    "Value":1117.557
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2008,
+    "Value":73.938
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2008,
+    "Value":45240.082
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2008,
+    "Value":18150.576
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2008,
+    "Value":0.389
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2008,
+    "Value":13747.507
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2008,
+    "Value":51.566
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2008,
+    "Value":11135.418
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2008,
+    "Value":14652.755
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2008,
+    "Value":-4131.748
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2008,
+    "Value":5652.835
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2009,
+    "Value":62312.258
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2009,
+    "Value":112.79
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2009,
+    "Value":13.733
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Carbon dioxide",
+    "Year":2009,
+    "Value":41749.645
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Methane",
+    "Year":2009,
+    "Value":11947.663
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Nitrous oxide",
+    "Year":2009,
+    "Value":7551.086
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Hydrofluorocarbons",
+    "Year":2009,
+    "Value":957.125
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Perfluorocarbons",
+    "Year":2009,
+    "Value":65.57
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Sulphur hexafluoride",
+    "Year":2009,
+    "Value":41.169
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2009,
+    "Value":2549.187
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2009,
+    "Value":992.754
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2009,
+    "Value":71.368
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2009,
+    "Value":40761.571
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2009,
+    "Value":17937.378
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2009,
+    "Value":0.381
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2009,
+    "Value":12527.453
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2009,
+    "Value":35.52
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2009,
+    "Value":10628.324
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2009,
+    "Value":13077.481
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2009,
+    "Value":-4495.782
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2009,
+    "Value":4492.794
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2010,
+    "Value":61894.904
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2010,
+    "Value":112.035
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2010,
+    "Value":13.584
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Carbon dioxide",
+    "Year":2010,
+    "Value":41292.132
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Methane",
+    "Year":2010,
+    "Value":11720.624
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Nitrous oxide",
+    "Year":2010,
+    "Value":7837.024
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Hydrofluorocarbons",
+    "Year":2010,
+    "Value":973.367
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Perfluorocarbons",
+    "Year":2010,
+    "Value":37.022
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Sulphur hexafluoride",
+    "Year":2010,
+    "Value":34.735
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2010,
+    "Value":2344.173
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2010,
+    "Value":992.728
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2010,
+    "Value":71.162
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2010,
+    "Value":40482.324
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2010,
+    "Value":18004.517
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2010,
+    "Value":0.383
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2010,
+    "Value":11605.3
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2010,
+    "Value":31.623
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2010,
+    "Value":10975.724
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2010,
+    "Value":13333.169
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2010,
+    "Value":-3857.779
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2010,
+    "Value":4536.508
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2011,
+    "Value":57749.958
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2011,
+    "Value":104.532
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2011,
+    "Value":12.62
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Carbon dioxide",
+    "Year":2011,
+    "Value":37716.338
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Methane",
+    "Year":2011,
+    "Value":11692.047
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Nitrous oxide",
+    "Year":2011,
+    "Value":7288.433
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Hydrofluorocarbons",
+    "Year":2011,
+    "Value":992.277
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Perfluorocarbons",
+    "Year":2011,
+    "Value":13.198
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Sulphur hexafluoride",
+    "Year":2011,
+    "Value":47.665
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2011,
+    "Value":2220.411
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2011,
+    "Value":1067.994
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2011,
+    "Value":72.066
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2011,
+    "Value":37008.937
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2011,
+    "Value":17380.551
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2011,
+    "Value":0.35
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2011,
+    "Value":11292.87
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2011,
+    "Value":27.775
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2011,
+    "Value":9471.442
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2011,
+    "Value":11941.405
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2011,
+    "Value":-3638.603
+  },
+  {
+    "Country":"Ireland",
+    "Pollutant":"Greenhouse gases",
+    "Year":2011,
+    "Value":4275.446
+  }
+]
