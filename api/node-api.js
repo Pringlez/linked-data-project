@@ -51,21 +51,30 @@ var app = express();
 app.use(cors());
 
 // JSON format files - Couchdb / Pouchdb
-var gases = JSON.parse(fs.readFileSync('gases.json', 'utf8'));
+var gases_nosql = JSON.parse(fs.readFileSync('gases-nosql.json', 'utf8'));
+//var energy-nosql = JSON.parse(fs.readFileSync('energy-nosql.json', 'utf8'));
 
 // Load the parsed json into document database
 nosql.put({
     _id: 'gases',
-    data: gases
+    data: gases_nosql
 }).then(function (response) {
-    console.log('Document Created!');
+    console.log('Gases Document Created!');
 }).catch(function (err) {
     console.log(err);
 });
+/*nosql.put({
+    _id: 'energy',
+    data: energy-nosql
+}).then(function (response) {
+    console.log('Energy Document Created!');
+}).catch(function (err) {
+    console.log(err);
+});*/
 
 // JSON format files - sqlite3
-var data1 = JSON.parse(fs.readFileSync('greenhousegases.json', 'utf8'));
-var data2 = JSON.parse(fs.readFileSync('energyusage.json', 'utf8'));
+var gases_sqlite3 = JSON.parse(fs.readFileSync('gases-sqlite3.json', 'utf8'));
+var energy_sqlite3 = JSON.parse(fs.readFileSync('energy-sqlite3.json', 'utf8'));
 
 // Load the database into memory
 var db = new sqlite3.Database(':memory:');
@@ -96,7 +105,7 @@ db.serialize(function() {
     var stmt = db.prepare("INSERT INTO Gases ('Country','Pollutant','Year', 'Value') VALUES (?,?,?,?)");
 	
     // Loop through each element in the first dataset
-	data1.forEach(function(gases){stmt.run(gases.Country, gases.Pollutant, gases.Year, gases.Value);});
+	gases_sqlite3.forEach(function(gases){stmt.run(gases.Country, gases.Pollutant, gases.Year, gases.Value);});
 	
     // Close finish insert statement
 	stmt.finalize();
@@ -109,7 +118,7 @@ db.serialize(function() {
     var stmt2 = db.prepare("INSERT INTO Energy ('Time','Demand') VALUES (?,?)");
 	
     // Loop through each element in the first dataset
-	data2.forEach(function(energy){stmt2.run(energy.Time, energy.Demand);});
+	energy_sqlite3.forEach(function(energy){stmt2.run(energy.Time, energy.Demand);});
 	
     // Close finish insert statement
 	stmt2.finalize();
@@ -132,12 +141,12 @@ app.get('/', function(req, res) {
 
 // Get all dataset 1 - return in json format - Will be changed to SQLite3
 app.get('/get-d1', function(req, res) {
-    res.json(data1);
+    res.json(gases_sqlite3);
 });
 
 // Get all dataset 2 - return in json format - Will be changed to SQLite3
 app.get('/get-d2', function(req, res){
-	res.json(data2);
+	res.json(energy_sqlite3);
 });
 
 // Get data record by ID, dataset 1 - SQLite3
@@ -275,7 +284,7 @@ app.post('/update-d1/', function(req, res){
 						+ " SET Country = ?, Pollutant = ?, Year = ?, Value = ?"
 						+ " WHERE"
 						+ " ID = ?");
-                // Run the update statement & checking to see if it ran ok, returning message
+                // Run the update statement & checking to see if it ran ok, returning message in json
                 stmt.run(body.country, body.pollutant, body.year, body.value, body.id, function(err, row){
                     if (this.changes == 1){
                         return res.json("Update Ok");
@@ -308,7 +317,7 @@ app.post('/update-d2/', function(req, res){
 						+ " SET Time = ?, Demand = ?"
 						+ " WHERE"
 						+ " ID = ?");
-                // Run the update statement & checking to see if it ran ok, returning message
+                // Run the update statement & checking to see if it ran ok, returning message in json
                 stmt.run(body.time, body.demand, body.id, function(err, row){
                     if (this.changes == 1){
                         return res.json("Update Ok");
@@ -324,6 +333,7 @@ app.post('/update-d2/', function(req, res){
 
 // Get all documents
 app.get('/getdocs', function(req, res) {
+    // Loop through documents currently in server instance & returning all docs in json
     nosql.allDocs({include_docs: true, descending: true}, function(err, doc) {
         return res.json(doc.rows);
     }).catch(function (err) {
@@ -331,20 +341,23 @@ app.get('/getdocs', function(req, res) {
     });
 });
 
-// Get document by id
-app.get('/getdoc/:id', function(req, res){
-	nosql.get(req.params.id).then(function (doc) {
+// Get specific document by name
+app.get('/getdoc/:name', function(req, res){
+    // Get request, parse name in query & submit to database & return in json
+	nosql.get(req.params.name).then(function (doc) {
         return res.json(doc);
     }).catch(function (err) {
         console.log(err);
     });
 });
 
-// Add document
+// Add document - test data currently
 app.get('/adddoc', function(req, res){
+    // Add / Put document by generating id by time / date
     nosql.put({
         _id: new Date().toISOString(),
         title: 'Heroes'
+        // Submit result of query in json
     }).then(function (response) {
         return res.json('Add Ok!');
     }).catch(function (err) {
@@ -352,14 +365,16 @@ app.get('/adddoc', function(req, res){
     });
 });
 
-// Update document, get request /updatedoc?id=todos&title=example
-app.get('/updatedoc', function(req, res){
-    nosql.get(req.query.id).then(function(doc) {
+// Update document, get request /updatedoc?name=todos&title=example - test data currently
+app.get('/updatedoc/:name', function(req, res){
+    // Get by name of document, then last rev id to update & parse get request data
+    nosql.get(req.query.name).then(function(doc) {
         return nosql.put({
-            _id: req.query.id,
+            _id: req.query.name,
             _rev: doc._rev,
             title: req.query.title
         });
+        // Submit result of query in json
     }).then(function(response) {
         return res.json('Update Ok!');
     }).catch(function (err) {
@@ -367,9 +382,9 @@ app.get('/updatedoc', function(req, res){
     });
 });
 
-// Delete document by id
-app.get('/deldoc/:id', function(req, res){
-    nosql.get(req.params.id).then(function(doc) {
+// Delete document by name
+app.get('/deldoc/:name', function(req, res){
+    nosql.get(req.params.name).then(function(doc) {
         nosql.remove(doc);
     }).then(function (result) {
         return res.json('Delete Ok!');
@@ -378,7 +393,7 @@ app.get('/deldoc/:id', function(req, res){
     });
 });
 
-// Set ip, port of server
+// Set ip, port of node server API
 app.listen(port, ip);
 
 // Display info of the server
