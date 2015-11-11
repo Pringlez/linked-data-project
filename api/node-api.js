@@ -134,9 +134,9 @@ db.serialize(function() {
     });*/
  });
 
-// Message to user
+// API Documentation
 app.get('/', function(req, res) {
-    res.json({ message: 'Linked-Data-API Working!' });
+    res.sendFile(__dirname + '\\' + "api-docs.html");
 });
 
 // Get all dataset 1 - return in json format - Will be changed to SQLite3

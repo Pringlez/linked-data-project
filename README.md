@@ -10,7 +10,7 @@ Project Details
 
 Datasets
 --------
-The datasets I'm using for this project are sourced from (http://stats.oecd.org/). I've chosen  to use a dataset related to the amount of pollutants being generated between roughly between 2007 to 2011. My second dataset will display the amount of energy being used during the same time period. There may be a correlation between the two datasets - Does the amount of energy being consumed effect the pollutant levels?
+The datasets I'm using for this project are sourced from (http://stats.oecd.org/). I've chosen  to use a dataset related to the amount of pollutants being generated between roughly between 2007 to 2011. My second dataset will display the amount of energy being used during the same time period. There may be a correlation between the two datasets - Does the amount of energy being consumed effect the pollutant levels?. This is the question I asked myself when I was looking for good datasets. Unfortunately Apps4Gaps datasets weren't detailed enough to provide this information in a suitable format.
 
 Installation - Ionic Front-end
 ------------------------------
@@ -33,13 +33,20 @@ npm install -g ionic
 
 Installation - NodeJS Back-end
 ------------------------------
-Start the Node API by running the following command in the 'api' directory. Make sure you run the 'npm install' to install the required dependencies for the API.
+You first need to install the required dependencies in the 'api' directory. Make sure you run the following 'npm install' to install the required dependencies for the API.
+
+To install dependencies
+```
+npm install
+```
+
+Then, after installing the required modules. Run the API by typing the following command in the 'api' directory
 
 ```
 node node-api.js
 ```
 
-By default the NodeJS API will be configured to run using localhost and will listen on port 11000. I've also included the option to run the API on the first valid ip address on the host machine, this could be handy deploying to remote node servers.
+By default the NodeJS API will be configured to run using localhost and will listen on port 11000. I've also included an option in the source code to switch the API to run on the first valid ip address on the host machine, this could be handy deploying to remote node servers.
 
 Ionic Usage
 -----------
@@ -55,7 +62,7 @@ API / NodeJS Usage
 Below is a list of URLs that can be used to request data from either SQLite3 or CouchDB / PouchDB databases
 
 ### SQLite3 RESTful Node API, example URLs:
-Root directory, displays message detailing API
+Root directory, displays html detailing API
 ```
 http://localhost:11000/
 ```
