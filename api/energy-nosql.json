@@ -1,0 +1,44 @@
+{"energy":{
+    "megawatts": {
+        "data": {
+            "xScale": "ordinal",
+            "yScale": "linear",
+            "type": "line",
+            "main": [
+                {
+                    "className": ".energy",
+                    "data": [
+                        {
+                            "x": 2007,
+                            "y": 2805
+                        },
+                        {
+                            "x": 2008,
+                            "y": 2867
+                        },
+                        {
+                            "x": 2009,
+                            "y": 2940
+                        },
+                        {
+                            "x": 2010,
+                            "y": 3103
+                        },
+                        {
+                            "x": 2011,
+                            "y": 3178
+                        }
+                    ]
+                }
+            ],
+            "options": {
+                "axisPaddingLeft": 0,
+                "paddingLeft": 45,
+                "paddingRight": 0,
+                "axisPaddingRight": 0,
+                "axisPaddingTop": 20,
+                "interpolation": "linear"
+            }
+        }
+    }
+}}
