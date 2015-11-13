@@ -3,7 +3,9 @@ angular.module('linked-data-project.services', [])
 .factory('PouchdbService', function($http) {
     
     var linkGases = 'http://localhost:11000/getdoc/gases';
+    var linkEnergy = 'http://localhost:11000/getdoc/energy';
     
+    // Dataset 1 - Gases - Functions
     return {
 		getGreenhouseGases: function(){
 			return $http.get(linkGases).then(function(res){
@@ -57,6 +59,16 @@ angular.module('linked-data-project.services', [])
 			return $http.get(linkGases).then(function(res){
 				var info = res.data;
                 return info.data.gases.sulphurhexafluoride.data;
+			}, function(err){
+                alert(JSON.stringify(err));
+			});
+		},
+        
+        // Dataset 2 - Energy - Functions
+        getEnergyData: function(){
+			return $http.get(linkEnergy).then(function(res){
+				var info = res.data;
+                return info.data.energy.megawatts.data;
 			}, function(err){
                 alert(JSON.stringify(err));
 			});

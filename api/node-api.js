@@ -10,10 +10,6 @@ var cors = require('cors');
 var sqlite3 = require('sqlite3').verbose();
 var pouchdb = require('pouchdb');
 
-// Create local database or remote couchdb instance
-var nosql = new pouchdb('linked-data-project');
-//var nosql = new pouchdb('http://192.168.1.142/linked-data-project');
-
 // Access network interface
 var ifaces = os.networkInterfaces();
 // Array to store validips later
@@ -50,9 +46,31 @@ var app = express();
 // Enable cors, allows cross site resource sharing to serve requests
 app.use(cors());
 
+// JSON format files - sqlite3
+var gases_sqlite3 = JSON.parse(fs.readFileSync('gases-sqlite3.json', 'utf8'));
+var energy_sqlite3 = JSON.parse(fs.readFileSync('energy-sqlite3.json', 'utf8'));
+
 // JSON format files - Couchdb / Pouchdb
 var gases_nosql = JSON.parse(fs.readFileSync('gases-nosql.json', 'utf8'));
-//var energy-nosql = JSON.parse(fs.readFileSync('energy-nosql.json', 'utf8'));
+var energy_nosql = JSON.parse(fs.readFileSync('energy-nosql.json', 'utf8'));
+
+// Database file
+var file = "linked-data-project.db";
+var exists = fs.existsSync(file);
+
+// If the db file does not exist
+if(!exists) {
+  console.log("Creating DB file");
+  fs.openSync(file, "w");
+}
+
+// Load the database into memory or into directory file
+//var db = new sqlite3.Database(':memory:');
+var db = new sqlite3.Database(file);
+
+// Create local database or remote couchdb instance
+var nosql = new pouchdb('linked-data-project');
+//var nosql = new pouchdb('http://192.168.1.142/linked-data-project');
 
 // Load the parsed json into document database
 nosql.put({
@@ -61,23 +79,20 @@ nosql.put({
 }).then(function (response) {
     console.log('Gases Document Created!');
 }).catch(function (err) {
-    console.log(err);
+    // If document is already in database, then give message
+    if(err.status == 409)
+        console.log('Gases Document Already Exists!');
 });
-/*nosql.put({
+nosql.put({
     _id: 'energy',
-    data: energy-nosql
+    data: energy_nosql
 }).then(function (response) {
     console.log('Energy Document Created!');
 }).catch(function (err) {
-    console.log(err);
-});*/
-
-// JSON format files - sqlite3
-var gases_sqlite3 = JSON.parse(fs.readFileSync('gases-sqlite3.json', 'utf8'));
-var energy_sqlite3 = JSON.parse(fs.readFileSync('energy-sqlite3.json', 'utf8'));
-
-// Load the database into memory
-var db = new sqlite3.Database(':memory:');
+    // If document is already in database, then give message
+    if(err.status == 409)
+        console.log('Energy Document Already Exists!');
+});
 
 // Object to store data for dataset1
 var Gas = function(ID, Country, Pollutant, Year, Value){
@@ -96,66 +111,95 @@ var Energy = function(ID, Time, Demand){
 }
 
 db.serialize(function() {
-    // Creating table gases for dataset1
-    db.run("CREATE TABLE Gases ("
-    + "'ID' INTEGER PRIMARY KEY AUTOINCREMENT, 'Country' VARCHAR(255), 'Pollutant' VARCHAR(255),"
-    + "'Year' INTEGER, 'Value' FLOAT)");
-    
-    // Preparing the SQL statement - dataset1
-    var stmt = db.prepare("INSERT INTO Gases ('Country','Pollutant','Year', 'Value') VALUES (?,?,?,?)");
-	
-    // Loop through each element in the first dataset
-	gases_sqlite3.forEach(function(gases){stmt.run(gases.Country, gases.Pollutant, gases.Year, gases.Value);});
-	
-    // Close finish insert statement
-	stmt.finalize();
-    console.log("Dataset Gases Loaded!");
-    
-    // Creating table gases for dataset2
-    db.run("CREATE TABLE Energy ('ID' INTEGER PRIMARY KEY AUTOINCREMENT, 'Time' VARCHAR(255), 'Demand' VARCHAR(255))");
-    
-    // Pareparing the SQL statement - dataset2
-    var stmt2 = db.prepare("INSERT INTO Energy ('Time','Demand') VALUES (?,?)");
-	
-    // Loop through each element in the first dataset
-	energy_sqlite3.forEach(function(energy){stmt2.run(energy.Time, energy.Demand);});
-	
-    // Close finish insert statement
-	stmt2.finalize();
-    console.log("Dataset Energy Loaded!");
-    
-    // Print records test
-    /*db.each("SELECT * FROM Gases", function(err, row) {
-      console.log("ID :" + row.ID + " Pollutant: " + row.Pollutant);
-    });*/
-    
-    /*db.each("SELECT * FROM Energy", function(err, row) {
-      console.log("ID :" + row.ID + " Time: " + row.Time + " Demand: " + row.Demand);
-    });*/
+    if (!exists) {
+        // Creating table gases for dataset1
+        db.run("CREATE TABLE Gases ("
+        + "'ID' INTEGER PRIMARY KEY AUTOINCREMENT, 'Country' VARCHAR(255), 'Pollutant' VARCHAR(255),"
+        + "'Year' INTEGER, 'Value' FLOAT)");
+
+        // Preparing the SQL statement - dataset1
+        var stmt = db.prepare("INSERT INTO Gases ('Country','Pollutant','Year', 'Value') VALUES (?,?,?,?)");
+
+        // Loop through each element in the first dataset
+        gases_sqlite3.forEach(function(gases){stmt.run(gases.Country, gases.Pollutant, gases.Year, gases.Value);});
+
+        // Close finish insert statement
+        stmt.finalize();
+        console.log("Dataset Gases Loaded!");
+
+        // Creating table gases for dataset2
+        db.run("CREATE TABLE Energy ('ID' INTEGER PRIMARY KEY AUTOINCREMENT, 'Time' VARCHAR(255), 'Demand' VARCHAR(255))");
+
+        // Pareparing the SQL statement - dataset2
+        var stmt2 = db.prepare("INSERT INTO Energy ('Time','Demand') VALUES (?,?)");
+
+        // Loop through each element in the first dataset
+        energy_sqlite3.forEach(function(energy){stmt2.run(energy.Time, energy.Demand);});
+
+        // Close finish insert statement
+        stmt2.finalize();
+        console.log("Dataset Energy Loaded!");
+
+        // Print records test
+        /*db.each("SELECT * FROM Gases", function(err, row) {
+          console.log("ID :" + row.ID + " Pollutant: " + row.Pollutant);
+        });*/
+
+        /*db.each("SELECT * FROM Energy", function(err, row) {
+          console.log("ID :" + row.ID + " Time: " + row.Time + " Demand: " + row.Demand);
+        });*/
+    }
+    else{
+        console.log("Database Loaded from File!");
+    }
  });
 
 // API Documentation
 app.get('/', function(req, res) {
+    // Return documentation in html to user, some resources are hosted on my home server
     res.sendFile(__dirname + '\\' + "api-docs.html");
 });
 
-// Get all dataset 1 - return in json format - Will be changed to SQLite3
+// Get all dataset 1 - return in json format
 app.get('/get-d1', function(req, res) {
-    res.json(gases_sqlite3);
+    db.serialize(function(){
+        // Store all records in array
+        var allRecs = [];
+        db.all("SELECT * FROM Gases", function(err, rows) {
+            // Select all query, push to array then return all in json format
+            allRecs.push(rows);
+            return res.json(allRecs);
+        });
+    });
 });
 
-// Get all dataset 2 - return in json format - Will be changed to SQLite3
+// Get all dataset 2 - return in json format
 app.get('/get-d2', function(req, res){
-	res.json(energy_sqlite3);
+    db.serialize(function(){
+        // Store all records in array
+        var allRecs = [];
+        db.all("SELECT * FROM Energy", function(err, row) {
+            // Select all query, push to array then return all in json format
+            allRecs.push(rows);
+            return res.json(allRecs);
+        });
+    }); 
 });
 
 // Get data record by ID, dataset 1 - SQLite3
 app.get('/get-d1/:id', function(req, res){
     db.serialize(function(){
         // Get record matching id - storing it first in object structure to return as json
-        db.each("SELECT * FROM Gases WHERE ID = " + req.params.id, function(err, row) {
-            var gasinfo  = new Gas(row.ID , row.Country, row.Pollutant, row.Year, row.Value);
-            return res.json(gasinfo);
+        db.all("SELECT * FROM Gases WHERE ID = " + req.params.id, function(err, rows) {
+            if(rows.length === 0){
+                return res.json('404');
+            }
+            else{
+                rows.forEach(function (row) {
+                    var gasinfo  = new Gas(row.ID , row.Country, row.Pollutant, row.Year, row.Value);
+                    return res.json(gasinfo);
+                })
+            }
         });
     });
 });
@@ -164,9 +208,16 @@ app.get('/get-d1/:id', function(req, res){
 app.get('/get-d2/:id', function(req, res){
 	db.serialize(function(){
         // Get record matching id - storing it first in object structure to return as json
-        db.each("SELECT * FROM Energy WHERE ID = " + req.params.id, function(err, row) {
-            var energyinfo = new Energy(row.ID , row.Time, row.Demand);
-            return res.json(energyinfo);
+        db.all("SELECT * FROM Energy WHERE ID = " + req.params.id, function(err, rows) {
+            if(rows.length === 0){
+                return res.json('404');
+            }
+            else{
+                rows.forEach(function (row) {
+                    var energyinfo = new Energy(row.ID , row.Time, row.Demand);
+                    return res.json(energyinfo);
+                })
+            }
         });
     });
 });
@@ -178,10 +229,10 @@ app.get('/del-d1/:id', function(req, res){
         var stmt = db.prepare("DELETE FROM Gases WHERE ID = ?");
         stmt.run(req.params.id, function(err, row){
             if (this.changes == 1){
-                return res.json("Delete Ok");
+                return res.json("Delete Ok!");
             }
             else{
-                return res.json("Delete Failed");
+                return res.json("Delete Failed!");
             }	
         });
     });
@@ -195,10 +246,10 @@ app.get('/del-d2/:id', function(req, res){
         stmt.run(req.params.id, function(err, row){
             // If statement ran ok, returning message
             if (this.changes == 1){
-                return res.json("Delete Ok");
+                return res.json("Delete Ok!");
             }
             else{
-                return res.json("Delete Failed");
+                return res.json("Delete Failed!");
             }	
         });
     });
@@ -224,10 +275,10 @@ app.post('/add-d1/', function(req, res){
                 var stmt = db.prepare("INSERT INTO Gases(Country, Pollutant, Year, Value) VALUES (?,?,?,?)");
                 stmt.run(body.country, body.pollutant, body.year, body.value, function(err, row){
                     if (this.changes == 1){
-                        return res.json("Insert Ok");
+                        return res.json("Insert Ok!");
                     }
                     else{
-                        return res.json("Insert Failed");
+                        return res.json("Insert Failed!");
                     }	
                 });
             }); 
@@ -254,10 +305,10 @@ app.post('/add-d2/', function(req, res){
                 var stmt = db.prepare("INSERT INTO Energy(Time, Demand) VALUES (?,?)");
                 stmt.run(body.time, body.demand, function(err, row){
                     if (this.changes == 1){
-                        return res.json("Insert Ok");
+                        return res.json("Insert Ok!");
                     }
                     else{
-                        return res.json("Insert Failed");
+                        return res.json("Insert Failed!");
                     }	
                 });
             });
@@ -287,10 +338,10 @@ app.post('/update-d1/', function(req, res){
                 // Run the update statement & checking to see if it ran ok, returning message in json
                 stmt.run(body.country, body.pollutant, body.year, body.value, body.id, function(err, row){
                     if (this.changes == 1){
-                        return res.json("Update Ok");
+                        return res.json("Update Ok!");
                     }
                     else{
-                        return res.json("Update Failed");
+                        return res.json("Update Failed!");
                     }	
                 });
             }); 
@@ -320,10 +371,10 @@ app.post('/update-d2/', function(req, res){
                 // Run the update statement & checking to see if it ran ok, returning message in json
                 stmt.run(body.time, body.demand, body.id, function(err, row){
                     if (this.changes == 1){
-                        return res.json("Update Ok");
+                        return res.json("Update Ok!");
                     }
                     else{
-                        return res.json("Update Failed");
+                        return res.json("Update Failed!");
                     }	
                 });
             }); 
@@ -359,7 +410,7 @@ app.get('/adddoc', function(req, res){
         title: 'Heroes'
         // Submit result of query in json
     }).then(function (response) {
-        return res.json('Add Ok!');
+        return res.json('Doc Add Ok!');
     }).catch(function (err) {
         console.log(err);
     });
@@ -376,7 +427,7 @@ app.get('/updatedoc/:name', function(req, res){
         });
         // Submit result of query in json
     }).then(function(response) {
-        return res.json('Update Ok!');
+        return res.json('Doc Update Ok!');
     }).catch(function (err) {
         console.log(err);
     });
@@ -387,7 +438,7 @@ app.get('/deldoc/:name', function(req, res){
     nosql.get(req.params.name).then(function(doc) {
         nosql.remove(doc);
     }).then(function (result) {
-        return res.json('Delete Ok!');
+        return res.json('Doc Delete Ok!');
     }).catch(function (err) {
         console.log(err);
     });

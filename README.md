@@ -164,3 +164,9 @@ https://blog.nraboy.com/2015/03/create-todo-list-mobile-app-using-ionic-framewor
 
 xCharts Examples
 http://tenxer.github.io/xcharts/examples/
+
+Dataset 1 - Pollutants
+http://stats.oecd.org/
+
+Dataset 2 - Energy
+http://www.eirgridgroup.com/how-the-grid-works/system-information/

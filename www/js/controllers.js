@@ -4,39 +4,41 @@ angular.module('linked-data-project.controllers', [])
 })
 
 .controller('ChartCtrl1', function($scope, $timeout, PouchdbService) {
+    // Controller for the chart page one in ionic application
+    // Render functions below to get data from back-end service, then display it using xcharts to user
     $scope.render = function() {
         PouchdbService.getGreenhouseGases().then(function(chartdata){
-            var html = '<h3 style="margin-left: 110px;">Greenhouse Gases</h3><figure style="width: 450px; height: 500px;" id="gaschart1"></figure>';
+            var html = '<h3 style="margin-left: 80px;">Greenhouse Gases</h3><figure style="margin-top: 15px; width: 450px; height: 500px;" id="gaschart1"></figure>';
             $("#chart1").html(html); 
             new xChart('line-dotted', chartdata, '#gaschart1', chartdata.options);
         });
         PouchdbService.getCarbonDioxide().then(function(chartdata){
-            var html = '<h3 style="margin-left: 110px;">Carbon Dioxide</h3><figure style="width: 450px; height: 500px;" id="gaschart2"></figure>';
+            var html = '<h3 style="margin-left: 80px;">Carbon Dioxide</h3><figure style="margin-top: 15px; width: 450px; height: 500px;" id="gaschart2"></figure>';
             $("#chart2").html(html); 
             new xChart('line-dotted', chartdata, '#gaschart2', chartdata.options);
         });
         PouchdbService.getMethane().then(function(chartdata){
-            var html = '<h3 style="margin-left: 110px;">Methane</h3><figure style="width: 450px; height: 500px;" id="gaschart3"></figure>';
+            var html = '<h3 style="margin-left: 80px;">Methane</h3><figure style="margin-top: 15px; width: 450px; height: 500px;" id="gaschart3"></figure>';
             $("#chart3").html(html); 
             new xChart('line-dotted', chartdata, '#gaschart3', chartdata.options);
         });
         PouchdbService.getNitrousOxide().then(function(chartdata){
-            var html = '<h3 style="margin-left: 110px;">Nitrous Oxide</h3><figure style="width: 450px; height: 500px;" id="gaschart4"></figure>';
+            var html = '<h3 style="margin-left: 80px;">Nitrous Oxide</h3><figure style="margin-top: 15px; width: 450px; height: 500px;" id="gaschart4"></figure>';
             $("#chart4").html(html); 
             new xChart('line-dotted', chartdata, '#gaschart4', chartdata.options);
         });
         PouchdbService.getHydrofluoroCarbons().then(function(chartdata){
-            var html = '<h3 style="margin-left: 110px;">HydroFluoro Carbons</h3><figure style="width: 450px; height: 500px;" id="gaschart5"></figure>';
+            var html = '<h3 style="margin-left: 80px;">HydroFluoro Carbons</h3><figure style="margin-top: 15px; width: 450px; height: 500px;" id="gaschart5"></figure>';
             $("#chart5").html(html); 
             new xChart('line-dotted', chartdata, '#gaschart5', chartdata.options);
         });
         PouchdbService.getPerfluoroCarbons().then(function(chartdata){
-            var html = '<h3 style="margin-left: 110px;">Perfluoro Carbons</h3><figure style="width: 450px; height: 500px;" id="gaschart6"></figure>';
+            var html = '<h3 style="margin-left: 80px;">Perfluoro Carbons</h3><figure style="margin-top: 15px; width: 450px; height: 500px;" id="gaschart6"></figure>';
             $("#chart6").html(html); 
             new xChart('line-dotted', chartdata, '#gaschart6', chartdata.options);
         });
         PouchdbService.getSulphurHexafluoride().then(function(chartdata){
-            var html = '<h3 style="margin-left: 110px;">Sulphur Hexafluoride</h3><figure style="width: 450px; height: 500px;" id="gaschart7"></figure>';
+            var html = '<h3 style="margin-left: 80px;">Sulphur Hexafluoride</h3><figure style="margin-top: 15px; width: 450px; height: 500px;" id="gaschart7"></figure>';
             $("#chart7").html(html); 
             new xChart('line-dotted', chartdata, '#gaschart7', chartdata.options);
         });
@@ -44,23 +46,15 @@ angular.module('linked-data-project.controllers', [])
 })
 
 .controller('ChartCtrl2', function($scope, $timeout, PouchdbService) {
-    /*$scope.render = function() {
-        PouchdbService.getCarbonDioxide().then(function(chartdata){
-            var html = '<h3 style="margin-left: 100px; margin-top: 10px;">Carbon Dioxide</h3><figure style="width: 450px; height: 500px;" id="gaschart2"></figure>';
-            $("#content2").html(html);
-            new xChart('line-dotted', chartdata, '#gaschart2', chartdata.options);
+    // Controller for the chart page one in ionic application
+    // Render functions below to get data from back-end service, then display it using xcharts to user
+    $scope.render = function() {
+        PouchdbService.getEnergyData().then(function(chartdata){
+            var html = '<h3 style="margin-left: 80px;">Megawatts</h3><figure style="margin-top: 15px; width: 450px; height: 500px;" id="energychart1"></figure>';
+            $("#chart8").html(html); 
+            new xChart('line-dotted', chartdata, '#energychart1', chartdata.options);
         });
-    }*/
-})
-
-.controller('ChartCtrl3', function($scope, $timeout, PouchdbService) {
-    /*$scope.render = function() {
-        PouchdbService.getMethane().then(function(chartdata){
-            var html = '<h3 style="margin-left: 100px; margin-top: 10px;">Methane</h3><figure style="width: 450px; height: 500px;" id="gaschart3"></figure>';
-            $("#content3").html(html);
-            new xChart('line-dotted', chartdata, '#gaschart3', chartdata.options);
-        });
-    }*/
+    }
 })
 
 .controller('DataSetCtrl1', function($scope, $http, $ionicPopup, $timeout) {
@@ -89,12 +83,17 @@ angular.module('linked-data-project.controllers', [])
         }
         else{
             // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
-            $http.get('http://' + ip + ':' + port + '/get-d1/' + searchID).then(function(resp) {
-                $scope.form.id = resp.data.ID;
-                $scope.form.country = resp.data.Country;
-                $scope.form.pollutant = resp.data.Pollutant;
-                $scope.form.year = resp.data.Year;
-                $scope.form.value = resp.data.Value;
+            $http.get('http://' + ip + ':' + port + '/get-d1/' + searchID).then(function(res) {
+                if(res.data == '404'){
+                    $scope.showAlert('Record Not Found!');
+                }
+                else{
+                    $scope.form.id = res.data.ID;
+                    $scope.form.country = res.data.Country;
+                    $scope.form.pollutant = res.data.Pollutant;
+                    $scope.form.year = res.data.Year;
+                    $scope.form.value = res.data.Value;
+                }
             }, function(err) {
             })
         }
@@ -167,10 +166,15 @@ angular.module('linked-data-project.controllers', [])
         }
         else{
             // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
-            $http.get('http://' + ip + ':' + port + '/get-d2/' + searchID).then(function(resp) {
-                $scope.form.id = resp.data.ID;
-                $scope.form.time = resp.data.Time;
-                $scope.form.demand = resp.data.Demand;
+            $http.get('http://' + ip + ':' + port + '/get-d2/' + searchID).then(function(res) {
+                if(res.data == '404'){
+                    $scope.showAlert('Record Not Found!');
+                }
+                else{
+                    $scope.form.id = res.data.ID;
+                    $scope.form.time = res.data.Time;
+                    $scope.form.demand = res.data.Demand;
+                }
             }, function(err) {
             })
         }
