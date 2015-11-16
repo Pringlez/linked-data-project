@@ -40,5 +40,319 @@
                 "interpolation": "linear"
             }
         }
+    },
+    "year2007": {
+        "data": {
+            "xScale": "ordinal",
+            "yScale": "linear",
+            "type": "bar",
+            "main": [
+                {
+                    "className": ".energy",
+                    "data": [
+                        {
+                            "x": "October",
+                            "y": 2757
+                        },
+                        {
+                            "x": "November",
+                            "y": 2876
+                        },
+                        {
+                            "x": "December",
+                            "y": 2943
+                        }
+                    ]
+                }
+            ],
+            "options": {
+                "axisPaddingLeft": 0,
+                "paddingLeft": 45,
+                "paddingRight": 0,
+                "axisPaddingRight": 0,
+                "axisPaddingTop": 20,
+                "interpolation": "linear"
+            }
+        }
+    },
+    "year2008": {
+        "data": {
+            "xScale": "ordinal",
+            "yScale": "linear",
+            "type": "bar",
+            "main": [
+                {
+                    "className": ".energy",
+                    "data": [
+                        {
+                            "x": "January",
+                            "y": 2869
+                        },
+                        {
+                            "x": "February",
+                            "y": 2979
+                        },
+                        {
+                            "x": "March",
+                            "y": 2891
+                        },
+                        {
+                            "x": "April",
+                            "y": 2759
+                        },
+                        {
+                            "x": "May",
+                            "y": 2689
+                        },
+                        {
+                            "x": "June",
+                            "y": 2587
+                        },
+                        {
+                            "x": "July",
+                            "y": 2611
+                        },
+                        {
+                            "x": "August",
+                            "y": 2745
+                        },
+                        {
+                            "x": "September",
+                            "y": 2761
+                        },
+                        {
+                            "x": "October",
+                            "y": 2863
+                        },
+                        {
+                            "x": "November",
+                            "y": 2889
+                        },
+                        {
+                            "x": "December",
+                            "y": 3001
+                        }
+                    ]
+                }
+            ],
+            "options": {
+                "axisPaddingLeft": 0,
+                "paddingLeft": 45,
+                "paddingRight": 0,
+                "axisPaddingRight": 0,
+                "axisPaddingTop": 20,
+                "interpolation": "linear"
+            }
+        }
+    },
+    "year2009": {
+        "data": {
+            "xScale": "ordinal",
+            "yScale": "linear",
+            "type": "bar",
+            "main": [
+                {
+                    "className": ".energy",
+                    "data": [
+                        {
+                            "x": "January",
+                            "y": 2831
+                        },
+                        {
+                            "x": "February",
+                            "y": 2978
+                        },
+                        {
+                            "x": "March",
+                            "y": 2866
+                        },
+                        {
+                            "x": "April",
+                            "y": 2701
+                        },
+                        {
+                            "x": "May",
+                            "y": 2699
+                        },
+                        {
+                            "x": "June",
+                            "y": 2601
+                        },
+                        {
+                            "x": "July",
+                            "y": 2643
+                        },
+                        {
+                            "x": "August",
+                            "y": 2779
+                        },
+                        {
+                            "x": "September",
+                            "y": 2725
+                        },
+                        {
+                            "x": "October",
+                            "y": 2865
+                        },
+                        {
+                            "x": "November",
+                            "y": 2890
+                        },
+                        {
+                            "x": "December",
+                            "y": 3013
+                        }
+                    ]
+                }
+            ],
+            "options": {
+                "axisPaddingLeft": 0,
+                "paddingLeft": 45,
+                "paddingRight": 0,
+                "axisPaddingRight": 0,
+                "axisPaddingTop": 20,
+                "interpolation": "linear"
+            }
+        }
+    },
+    "year2010": {
+        "data": {
+            "xScale": "ordinal",
+            "yScale": "linear",
+            "type": "bar",
+            "main": [
+                {
+                    "className": ".energy",
+                    "data": [
+                        {
+                            "x": "January",
+                            "y": 2870
+                        },
+                        {
+                            "x": "February",
+                            "y": 2921
+                        },
+                        {
+                            "x": "March",
+                            "y": 2860
+                        },
+                        {
+                            "x": "April",
+                            "y": 2752
+                        },
+                        {
+                            "x": "May",
+                            "y": 2680
+                        },
+                        {
+                            "x": "June",
+                            "y": 2599
+                        },
+                        {
+                            "x": "July",
+                            "y": 2620
+                        },
+                        {
+                            "x": "August",
+                            "y": 2712
+                        },
+                        {
+                            "x": "September",
+                            "y": 2787
+                        },
+                        {
+                            "x": "October",
+                            "y": 2854
+                        },
+                        {
+                            "x": "November",
+                            "y": 2966
+                        },
+                        {
+                            "x": "December",
+                            "y": 3043
+                        }
+                    ]
+                }
+            ],
+            "options": {
+                "axisPaddingLeft": 0,
+                "paddingLeft": 45,
+                "paddingRight": 0,
+                "axisPaddingRight": 0,
+                "axisPaddingTop": 20,
+                "interpolation": "linear"
+            }
+        }
+    },
+    "year2011": {
+        "data": {
+            "xScale": "ordinal",
+            "yScale": "linear",
+            "type": "bar",
+            "main": [
+                {
+                    "className": ".energy",
+                    "data": [
+                        {
+                            "x": "January",
+                            "y": 2812
+                        },
+                        {
+                            "x": "February",
+                            "y": 2922
+                        },
+                        {
+                            "x": "March",
+                            "y": 2830
+                        },
+                        {
+                            "x": "April",
+                            "y": 2713
+                        },
+                        {
+                            "x": "May",
+                            "y": 2654
+                        },
+                        {
+                            "x": "June",
+                            "y": 2631
+                        },
+                        {
+                            "x": "July",
+                            "y": 2632
+                        },
+                        {
+                            "x": "August",
+                            "y": 2721
+                        },
+                        {
+                            "x": "September",
+                            "y": 2776
+                        },
+                        {
+                            "x": "October",
+                            "y": 2861
+                        },
+                        {
+                            "x": "November",
+                            "y": 2871
+                        },
+                        {
+                            "x": "December",
+                            "y": 3004
+                        }
+                    ]
+                }
+            ],
+            "options": {
+                "axisPaddingLeft": 0,
+                "paddingLeft": 45,
+                "paddingRight": 0,
+                "axisPaddingRight": 0,
+                "axisPaddingTop": 20,
+                "interpolation": "linear"
+            }
+        }
     }
 }}
