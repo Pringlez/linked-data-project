@@ -10,7 +10,24 @@ Project Details
 
 Datasets
 --------
-The datasets I'm using for this project are sourced from (http://stats.oecd.org/). I've chosen  to use a dataset related to the amount of pollutants being generated between roughly between 2007 to 2011. My second dataset will display the amount of energy being used during the same time period. There may be a correlation between the two datasets - Does the amount of energy being consumed effect the pollutant levels?. This is the question I asked myself when I was looking for good datasets. Unfortunately Apps4Gaps datasets weren't detailed enough to provide this information in a suitable format.
+The datasets I'm using for this project are sourced from [www.stats.oecd.org](http://stats.oecd.org/). The first dataset I've chosen to use contains data related to the level of pollutants being generated and expelled into the atmosphere roughly between 2007 to 2011.
+
+My second dataset will display the amount of energy being used during the same time period. There may be a correlation between the two datasets - I've ask myself "Does the amount of energy being consumed effect the pollutant levels?". The charts I've implemented in the front-end will help you visualize any correlation between the two datasets.
+
+I've formatted the data into two different structures, one being for the SQLite database and the other for a NoSQL document database.  
+
+The Energy dataset NoSQL structure contains monthly averages for the amount of energy consumed for each year, this data is sourced from the SQLite Energy dataset. 
+
+The Gases dataset NoSQL structure contains the averages for each year for every pollutant, this data is also sourced from the SQLite Gases dataset.
+
+Links to dataset structures
+
+[Energy - SQLite3](http://johnsprojects.dyndns.org/resources/linked-data-project/datasets/energy-sqlite3.json)
+[Gases - SQLite3](http://johnsprojects.dyndns.org/resources/linked-data-project/datasets/gases-sqlite3.json)
+[Energy - NoSQL](http://johnsprojects.dyndns.org/resources/linked-data-project/datasets/energy-nosql.json)
+[Gases - NoSQL](http://johnsprojects.dyndns.org/resources/linked-data-project/datasets/gases-nosql.json)
+
+Unfortunately, the Apps4Gaps datasets are quite fragmented, and weren't suitable to provide the necessary information in a suitable format. This is way I choose to look for a different source for data
 
 Installation - Ionic Front-end
 ------------------------------
@@ -136,6 +153,51 @@ http://localhost:11000/updatedoc/:name
 Delete specific document in PouchDB / CouchDB server by 'name' get request
 ```
 http://localhost:11000/deldoc/:name
+```
+### Code Examples:
+The following example is written in javascript, to send a get request. Pass for example
+"http://localhost:11000/get-d1/" to the function
+```
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false );
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+```
+
+This example can be used in an Ionic application, you can paste the following code into
+a controller.
+```
+// Search by id function
+$scope.searchByID = function() {
+
+    var searchID = $scope.form.id;
+
+    // If not a number then set searchID to 1
+    if(isNaN(parseFloat(searchID)) && !isFinite(searchID)){
+        $scope.showAlert('ID is a number!');
+    }
+    else{
+        // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
+        $http.get('http://' + ip + ':' + port + '/get-d1/' + searchID).then(function(res) {
+            // If the record id is not found, display error message
+            if(res.data == '404'){
+                $scope.showAlert('Record Not Found!');
+            }
+            else{
+                // Setting form with retrieved data
+                $scope.form.id = res.data.ID;
+                $scope.form.country = res.data.Country;
+                $scope.form.pollutant = res.data.Pollutant;
+                $scope.form.year = res.data.Year;
+                $scope.form.value = res.data.Value;
+            }
+        }, function(err) {
+        })
+    }
+};
 ```
 
 Online References

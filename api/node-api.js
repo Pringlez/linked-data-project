@@ -72,27 +72,23 @@ var db = new sqlite3.Database(file);
 var nosql = new pouchdb('linked-data-project');
 //var nosql = new pouchdb('http://192.168.1.142/linked-data-project');
 
+// Calling function to add dataset manually to NoSQL database
+addDoc('gases', gases_nosql);
+addDoc('energy', energy_nosql);
+
 // Load the parsed json into document database
-nosql.put({
-    _id: 'gases',
-    data: gases_nosql
-}).then(function (response) {
-    console.log('Gases Document Created!');
-}).catch(function (err) {
+function addDoc(name, dataset){
+    nosql.put({
+        _id: name,
+        data: dataset
+    }).then(function (response) {
+        console.log(name + ' Document Created!');
+    }).catch(function (err) {
     // If document is already in database, then give message
     if(err.status == 409)
-        console.log('Gases Document Already Exists!');
-});
-nosql.put({
-    _id: 'energy',
-    data: energy_nosql
-}).then(function (response) {
-    console.log('Energy Document Created!');
-}).catch(function (err) {
-    // If document is already in database, then give message
-    if(err.status == 409)
-        console.log('Energy Document Already Exists!');
-});
+        console.log(name + ' Document Already Exists!');
+    });
+}
 
 // Object to store data for dataset1
 var Gas = function(ID, Country, Pollutant, Year, Value){
@@ -110,6 +106,7 @@ var Energy = function(ID, Time, Demand){
 	this.Demand = (Demand) ? Demand : "N/A";
 }
 
+// Calling database, open connection
 db.serialize(function() {
     if (!exists) {
         // Creating table gases for dataset1
@@ -139,15 +136,6 @@ db.serialize(function() {
         // Close finish insert statement
         stmt2.finalize();
         console.log("Dataset Energy Loaded!");
-
-        // Print records test
-        /*db.each("SELECT * FROM Gases", function(err, row) {
-          console.log("ID :" + row.ID + " Pollutant: " + row.Pollutant);
-        });*/
-
-        /*db.each("SELECT * FROM Energy", function(err, row) {
-          console.log("ID :" + row.ID + " Time: " + row.Time + " Demand: " + row.Demand);
-        });*/
     }
     else{
         console.log("Database Loaded from File!");
@@ -404,32 +392,15 @@ app.get('/getdoc/:name', function(req, res){
 
 // Add document - test data currently
 app.get('/adddoc', function(req, res){
-    // Add / Put document by generating id by time / date
     nosql.put({
-        _id: new Date().toISOString(),
-        title: 'Heroes'
-        // Submit result of query in json
+        _id: res.name,
+        data: res.dataset
     }).then(function (response) {
-        return res.json('Doc Add Ok!');
+        console.log(res.name + ' Document Created!');
     }).catch(function (err) {
-        console.log(err);
-    });
-});
-
-// Update document, get request /updatedoc?name=todos&title=example - test data currently
-app.get('/updatedoc/:name', function(req, res){
-    // Get by name of document, then last rev id to update & parse get request data
-    nosql.get(req.query.name).then(function(doc) {
-        return nosql.put({
-            _id: req.query.name,
-            _rev: doc._rev,
-            title: req.query.title
-        });
-        // Submit result of query in json
-    }).then(function(response) {
-        return res.json('Doc Update Ok!');
-    }).catch(function (err) {
-        console.log(err);
+    // If document is already in database, then give message
+    if(err.status == 409)
+        console.log(res.name + ' Document Already Exists!');
     });
 });
 

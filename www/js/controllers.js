@@ -108,7 +108,7 @@ angular.module('linked-data-project.controllers', [])
         // Calls function in services to get average MW of each month of the year
         PouchdbService.getMonthAverage2011().then(function(chartdata){
             var html = '<h3 style="margin-left: 80px; margin-top: 30px;">Megawatts - 2011</h3><figure style="margin-top: 15px; width: 100%; height: 500px;" id="energychart2011"></figure>';
-            $("#char13").html(html); 
+            $("#chart13").html(html); 
             // Render html in page & set chart data to that object
             new xChart('bar', chartdata, '#energychart2011', chartdata.options);
         });
@@ -165,7 +165,6 @@ angular.module('linked-data-project.controllers', [])
         $http.post('http://' + ip + ':' + port + '/add-d1/', {country : $scope.form.country, pollutant : $scope.form.pollutant, year : $scope.form.year, value : $scope.form.value}).then(function (res){
             $scope.showAlert(res.data);
         });
-        
     };
     
     // Update by id function
@@ -240,8 +239,7 @@ angular.module('linked-data-project.controllers', [])
                 }
             }, function(err) {
             })
-        }
-        
+        }  
     };
     
     // Insert by id function
@@ -250,7 +248,6 @@ angular.module('linked-data-project.controllers', [])
         $http.post('http://' + ip + ':' + port + '/add-d2/', {time : $scope.form.time, demand : $scope.form.demand}).then(function (res){
             $scope.showAlert(res.data);
         });
-        
     };
     
     // Update by id function
@@ -277,7 +274,6 @@ angular.module('linked-data-project.controllers', [])
                 $scope.showAlert(res.data);
             });
         }
-        
     };
     
     // Show dialog box message
