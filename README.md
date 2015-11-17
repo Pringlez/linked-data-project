@@ -23,8 +23,11 @@ The Gases dataset NoSQL structure contains the averages for each year for every 
 Links to dataset structures
 
 [Energy - SQLite3](http://johnsprojects.dyndns.org/resources/linked-data-project/datasets/energy-sqlite3.json)
+
 [Gases - SQLite3](http://johnsprojects.dyndns.org/resources/linked-data-project/datasets/gases-sqlite3.json)
+
 [Energy - NoSQL](http://johnsprojects.dyndns.org/resources/linked-data-project/datasets/energy-nosql.json)
+
 [Gases - NoSQL](http://johnsprojects.dyndns.org/resources/linked-data-project/datasets/gases-nosql.json)
 
 Unfortunately, the Apps4Gaps datasets are quite fragmented, and weren't suitable to provide the necessary information in a suitable format. This is way I choose to look for a different source for data
@@ -143,6 +146,11 @@ http://localhost:11000/getdocs/
 Get specific document in PouchDB / CouchDB server by 'name' get request
 ```
 http://localhost:11000/getdoc/:name
+```
+
+Add document to PouchDB / CouchDB server by posting 'name' & 'dataset' variables. The 'dataset' variable is json object to be stored in database & 'name' is the actual name of the database it will be stored with.
+```
+http://localhost:11000/adddoc/
 ```
 
 Delete specific document in PouchDB / CouchDB server by 'name' get request

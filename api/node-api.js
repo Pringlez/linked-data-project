@@ -391,10 +391,10 @@ app.get('/getdoc/:name', function(req, res){
 });
 
 // Add document - test data currently
-app.get('/adddoc', function(req, res){
+app.post('/adddoc', function(req, res){
     nosql.put({
-        _id: res.name,
-        data: res.dataset
+        _id: req.name,
+        data: req.dataset
     }).then(function (response) {
         console.log(res.name + ' Document Created!');
     }).catch(function (err) {
