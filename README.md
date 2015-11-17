@@ -145,11 +145,6 @@ Get specific document in PouchDB / CouchDB server by 'name' get request
 http://localhost:11000/getdoc/:name
 ```
 
-Update specific document in PouchDB / CouchDB server by 'name' get request
-```
-http://localhost:11000/updatedoc/:name
-```
-
 Delete specific document in PouchDB / CouchDB server by 'name' get request
 ```
 http://localhost:11000/deldoc/:name
