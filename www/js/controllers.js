@@ -57,6 +57,8 @@ angular.module('linked-data-project.controllers', [])
             new xChart('line-dotted', chartdata, '#gaschart7', chartdata.options);
         });
     }
+    
+    $scope.render();
 })
 
 .controller('ChartCtrl2', function($scope, $timeout, PouchdbService) {
@@ -71,6 +73,8 @@ angular.module('linked-data-project.controllers', [])
             new xChart('line-dotted', chartdata, '#energychart1', chartdata.options);
         });
     }
+    
+    $scope.render();
 })
 
 .controller('ChartCtrl3', function($scope, $timeout, PouchdbService) {
@@ -113,9 +117,11 @@ angular.module('linked-data-project.controllers', [])
             new xChart('bar', chartdata, '#energychart2011', chartdata.options);
         });
     }
+    
+    $scope.render();
 })
 
-.controller('DataSetCtrl1', function($scope, $http, $ionicPopup, $timeout) {
+.controller('DataSetCtrl1', function($scope, $http, $ionicPopup, $stateParams, $timeout) {
     
     // Connection details
     var ip = 'localhost';
@@ -200,9 +206,48 @@ angular.module('linked-data-project.controllers', [])
             template: message
         });
     };
+    
+    function checkParams(){
+        $scope.form.id = $stateParams.recordId;
+        $scope.searchByID();
+    }
+    
+    checkParams();
 })
 
-.controller('DataSetCtrl2', function($scope, $http, $ionicPopup, $timeout) {
+.controller('DataSetCtrlList1', function($scope, $http, $timeout) {
+    
+    // Connection details
+    var ip = 'localhost';
+    var port = '11000';
+
+    $scope.delete = function(record) {
+        alert('Delete Item: ' + record.ID);
+        $scope.records.splice($scope.records.indexOf(item), 1);
+    };
+
+    $scope.onRecordDelete = function(item) {
+        $scope.records.splice($scope.records.indexOf(item), 1);
+    };
+    
+    $scope.records = [];
+    
+    getAllRecords = function() {
+        
+        // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
+        $http.get('http://' + ip + ':' + port + '/get-d1/').then(function(res) {
+
+            $scope.records = res.data;
+            $scope.records = $scope.records[0];
+
+        }, function(err) {
+        });
+    }
+    
+    getAllRecords();
+})
+
+.controller('DataSetCtrl2', function($scope, $http, $ionicPopup, $stateParams, $timeout) {
     
     // Connection details
     var ip = 'localhost';
@@ -283,4 +328,45 @@ angular.module('linked-data-project.controllers', [])
             template: message
         });
     };
+    
+    function checkParams(){
+        $scope.form.id = $stateParams.recordId;
+        $scope.searchByID();
+    }
+    
+    checkParams();
+})
+
+.controller('DataSetCtrlList2', function($scope, $http, $timeout) {
+  
+  // Connection details
+    var ip = 'localhost';
+    var port = '11000';
+
+    $scope.delete = function(record) {
+        alert('Delete Item: ' + record.ID);
+        $scope.records.splice($scope.records.indexOf(item), 1);
+    };
+
+    $scope.onRecordDelete = function(item) {
+        $scope.records.splice($scope.records.indexOf(item), 1);
+    };
+    
+    $scope.records = [];
+    
+    getAllRecords = function(recLimit) {
+        
+        // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
+        // I limited the query here because there is about 500000 rows in the database
+        $http.get('http://' + ip + ':' + port + '/get-d2-limit/' + recLimit).then(function(res) {
+
+            $scope.records = res.data;
+            $scope.records = $scope.records[0];
+
+        }, function(err) {
+        });
+    }
+    
+    // Limited to 100 records, feel free to change
+    getAllRecords(100);
 });

@@ -30,7 +30,7 @@ Links to dataset structures
 
 [Gases - NoSQL](http://johnsprojects.dyndns.org/resources/linked-data-project/datasets/gases-nosql.json)
 
-Unfortunately, the Apps4Gaps datasets are quite fragmented, and weren't suitable to provide the necessary information in a suitable format. This is way I choose to look for a different source for data
+Unfortunately, the Apps4Gaps datasets are quite fragmented, and weren't suitable to provide the necessary information in a suitable format. This is why I choose to look for a different source for datasets.
 
 Installation - Ionic Front-end
 ------------------------------
@@ -76,6 +76,8 @@ Navigate  to the root project directory, run the application by running the foll
 ```
 ionic serve
 ```
+
+Swipe to the right to view the menu list, from there you can navigate to different views of the application.
 
 API / NodeJS Usage
 ------------------

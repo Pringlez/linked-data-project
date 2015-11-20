@@ -96,8 +96,12 @@
         <code>http://localhost:11000/</code>
         <p style="padding-top: 20px;">Get all of the gas pollutants dataset</p>
         <code>http://localhost:11000/get-d1/</code>
+        <p style="padding-top: 20px;">Get limited amount of records back from the gas pollutants dataset</p>
+        <code>http://localhost:11000/get-d1-limit/:limit</code>
         <p style="padding-top: 20px;">Get all of the energy consumption dataset</p>
         <code>http://localhost:11000/get-d2/</code>
+        <p style="padding-top: 20px;">Get limited amount of records back from the energy consumption dataset</p>
+        <code>http://localhost:11000/get-d2-limit/:limit</code>
         <p style="padding-top: 20px;">Get specific data record from gas pollutants dataset by ID</p>
         <code>http://localhost:11000/get-d1/:id</code>
         <p style="padding-top: 20px;">Get specific data record from energy dataset by ID</p>
@@ -116,13 +120,13 @@
         <code>http://localhost:11000/update-d2/</code>
         <h3 style="padding-top: 30px;">CouchDB / PouchDB API's</h3><br/>
         <p>Root directory, displays html detailing API</p>
-        <code>http://localhost:11000/</code>
+        <code>http://localhost:11000/</code><br/><br/>
+        <p>Add document to PouchDB / CouchDB server by posting 'name' and 'dataset' variables. The 'dataset' variable is json object to be stored in database and 'name' is the actual name of the database it will be stored as.</p>
+        <code>http://localhost:11000/adddoc/</code>
         <p style="padding-top: 20px;">Get all documents in every database in PouchDB / CouchDB instance</p>
         <code>http://localhost:11000/getdocs/</code>
         <p style="padding-top: 20px;">Get specific document in PouchDB / CouchDB server by 'name' get request</p>
         <code>http://localhost:11000/getdoc/:name</code>
-        <p style="padding-top: 20px;">Update specific document in PouchDB / CouchDB server by 'name' get request</p>
-        <code>http://localhost:11000/updatedoc/:name</code>
         <p style="padding-top: 20px;">Delete specific document in PouchDB / CouchDB server by 'name' get request</p>
         <code>http://localhost:11000/deldoc/:name</code>
     </div>

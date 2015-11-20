@@ -60,7 +60,7 @@ angular.module('linked-data-project', ['ionic', 'linked-data-project.controllers
     
     // Dataset 1 state
     .state('app.dataset-1', {
-        url: '/dataset-1',
+        url: '/dataset-1/:recordId',
         views: {
             'menuContent': {
                 templateUrl: 'templates/dataset-1.html',
@@ -69,9 +69,19 @@ angular.module('linked-data-project', ['ionic', 'linked-data-project.controllers
         }
     })
     
+    .state('app.dataset-1-list', {
+        url: '/dataset-1-list',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/dataset-1-list.html',
+                controller: 'DataSetCtrlList1'
+            }
+        }
+    })
+    
     // Dataset 2 state
     .state('app.dataset-2', {
-        url: '/dataset-2',
+        url: '/dataset-2/:recordId',
         views: {
             'menuContent': {
                 templateUrl: 'templates/dataset-2.html',
@@ -79,8 +89,18 @@ angular.module('linked-data-project', ['ionic', 'linked-data-project.controllers
             }
         }
     })
+    
+    .state('app.dataset-2-list', {
+        url: '/dataset-2-list',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/dataset-2-list.html',
+                controller: 'DataSetCtrlList2'
+            }
+        }
+    })
 
     // If state unknown, load chart 1 state
-    $urlRouterProvider.otherwise('/app/dataset-1');
+    $urlRouterProvider.otherwise('/app/dataset-1/1');
 
 });

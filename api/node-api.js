@@ -16,7 +16,7 @@ var ifaces = os.networkInterfaces();
 var validIPs = [];
 
 // Function to get & store valid IPs host system has - (Ignoring loop back address)
-// I used this for testing on remote node server
+// I've mainly used this for testing on remote node server
 Object.keys(ifaces).forEach(function (ifname) {
     var alias = 0;
     // Loop through 
@@ -34,7 +34,7 @@ Object.keys(ifaces).forEach(function (ifname) {
     });
 });
 
-// Use if you wish to test with local valid ips
+// Use if you wish to test with local valid ips, api will choose default first ip
 //var ip = validIPs[0];
 
 // Set ip & port
@@ -54,19 +54,19 @@ var energy_sqlite3 = JSON.parse(fs.readFileSync('energy-sqlite3.json', 'utf8'));
 var gases_nosql = JSON.parse(fs.readFileSync('gases-nosql.json', 'utf8'));
 var energy_nosql = JSON.parse(fs.readFileSync('energy-nosql.json', 'utf8'));
 
-// Database file
-var file = "linked-data-project.db";
-var exists = fs.existsSync(file);
+// Database file - Option to create database as file
+//var file = "linked-data-project.db";
+//var exists = fs.existsSync(file);
 
 // If the db file does not exist
-if(!exists) {
+/*if(!exists) {
   console.log("Creating DB file");
   fs.openSync(file, "w");
-}
+}*/
 
 // Load the database into memory or into directory file
-//var db = new sqlite3.Database(':memory:');
-var db = new sqlite3.Database(file);
+var db = new sqlite3.Database(':memory:');
+//var db = new sqlite3.Database(file);
 
 // Create local database or remote couchdb instance
 var nosql = new pouchdb('linked-data-project');
@@ -108,7 +108,7 @@ var Energy = function(ID, Time, Demand){
 
 // Calling database, open connection
 db.serialize(function() {
-    if (!exists) {
+    //if (!exists) {
         // Creating table gases for dataset1
         db.run("CREATE TABLE Gases ("
         + "'ID' INTEGER PRIMARY KEY AUTOINCREMENT, 'Country' VARCHAR(255), 'Pollutant' VARCHAR(255),"
@@ -136,10 +136,10 @@ db.serialize(function() {
         // Close finish insert statement
         stmt2.finalize();
         console.log("Dataset Energy Loaded!");
-    }
+    /*
     else{
         console.log("Database Loaded from File!");
-    }
+    }*/
  });
 
 // API Documentation
@@ -161,12 +161,38 @@ app.get('/get-d1', function(req, res) {
     });
 });
 
+// Get limited number from dataset 1 - return in json format
+app.get('/get-d1-limit/:limit', function(req, res) {
+    db.serialize(function(){
+        // Store all records in array
+        var allRecs = [];
+        db.all("SELECT * FROM Gases LIMIT " + req.params.limit, function(err, rows) {
+            // Select all query, push to array then return all in json format
+            allRecs.push(rows);
+            return res.json(allRecs);
+        });
+    });
+});
+
 // Get all dataset 2 - return in json format
 app.get('/get-d2', function(req, res){
     db.serialize(function(){
         // Store all records in array
         var allRecs = [];
-        db.all("SELECT * FROM Energy", function(err, row) {
+        db.all("SELECT * FROM Energy", function(err, rows) {
+            // Select all query, push to array then return all in json format
+            allRecs.push(rows);
+            return res.json(allRecs);
+        });
+    }); 
+});
+
+// Get limited number from dataset 2 - return in json format
+app.get('/get-d2-limit/:limit', function(req, res){
+    db.serialize(function(){
+        // Store all records in array
+        var allRecs = [];
+        db.all("SELECT * FROM Energy LIMIT " + req.params.limit, function(err, rows) {
             // Select all query, push to array then return all in json format
             allRecs.push(rows);
             return res.json(allRecs);
