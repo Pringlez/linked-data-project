@@ -77,7 +77,9 @@ Navigate  to the root project directory, run the application by running the foll
 ionic serve
 ```
 
-Swipe to the right to view the menu list, from there you can navigate to different views of the application.
+Swipe to the right to view the menu list or click the top left icon, from there you can navigate to different views of the application. You can search by ID in the form views for both datasets, also you can insert, update and delete records from these views.
+
+The chart views will display data from the PouchDB / CouchDB databases, the structure has been formatted specifically for the xCharts JS library. 
 
 API / NodeJS Usage
 ------------------

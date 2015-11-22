@@ -67,7 +67,7 @@ angular.module('linked-data-project.controllers', [])
     $scope.render = function() {
         // Calls function in services to get average MW of each years
         PouchdbService.getEnergyData().then(function(chartdata){
-            var html = '<h3 style="margin-left: 120px; margin-top: 30px;">Megawatts</h3><figure style="margin-top: 15px; width: 100%; height: 500px;" id="energychart1"></figure>';
+            var html = '<h3 style="margin-left: 120px; margin-top: 10px;">Megawatts</h3><figure style="margin-top: 15px; width: 100%; height: 500px;" id="energychart1"></figure>';
             $("#chart8").html(html); 
             // Render html in page & set chart data to that object
             new xChart('line-dotted', chartdata, '#energychart1', chartdata.options);
@@ -83,7 +83,7 @@ angular.module('linked-data-project.controllers', [])
     $scope.render = function() {
         // Calls function in services to get average MW of each month of the year
         PouchdbService.getMonthAverage2007().then(function(chartdata){
-            var html = '<h3 style="margin-left: 80px; margin-top: 30px;">Megawatts - 2007</h3><figure style="margin-top: 15px; width: 100%; height: 500px;" id="energychart2007"></figure>';
+            var html = '<h3 style="margin-left: 80px; margin-top: 10px;">Megawatts - 2007</h3><figure style="margin-top: 15px; width: 100%; height: 500px;" id="energychart2007"></figure>';
             $("#chart9").html(html); 
             // Render html in page & set chart data to that object
             new xChart('bar', chartdata, '#energychart2007', chartdata.options);
@@ -143,7 +143,7 @@ angular.module('linked-data-project.controllers', [])
         
         // If not a number then set searchID to 1
         if(isNaN(parseFloat(searchID)) && !isFinite(searchID)){
-            $scope.showAlert('ID is a number!');
+            $scope.showAlert('ID is a Number!');
         }
         else{
             // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
@@ -161,7 +161,8 @@ angular.module('linked-data-project.controllers', [])
                     $scope.form.value = res.data.Value;
                 }
             }, function(err) {
-            })
+                $scope.showAlert('Error: ' + JSON.stringify(err.status));
+            });
         }
     };
     
@@ -170,6 +171,8 @@ angular.module('linked-data-project.controllers', [])
         // Posts data from the front end to the API, passes Country, Pollutant, Year & Value variables
         $http.post('http://' + ip + ':' + port + '/add-d1/', {country : $scope.form.country, pollutant : $scope.form.pollutant, year : $scope.form.year, value : $scope.form.value}).then(function (res){
             $scope.showAlert(res.data);
+        }, function(err) {
+            $scope.showAlert('Error: ' + JSON.stringify(err.status));
         });
     };
     
@@ -178,8 +181,9 @@ angular.module('linked-data-project.controllers', [])
         // Posts data from the front end to the API with ID to update a specific record
         $http.post('http://' + ip + ':' + port + '/update-d1/', {id : $scope.form.id, country : $scope.form.country, pollutant : $scope.form.pollutant, year : $scope.form.year, value : $scope.form.value}).then(function (res){
             $scope.showAlert(res.data);
+        }, function(err) {
+            $scope.showAlert('Error: ' + JSON.stringify(err.status));
         });
-        
     };
     
     // Delete by id function
@@ -189,12 +193,14 @@ angular.module('linked-data-project.controllers', [])
         
         // If not a number then set searchID to 1
         if(isNaN(parseFloat(deleteID)) && !isFinite(deleteID)){
-            $scope.showAlert('ID is a number!');
+            $scope.showAlert('ID is a Number!');
         }
         else{   
             // Send get request to delete specific record
             $http.get('http://' + ip + ':' + port + '/del-d1/' + deleteID).then(function (res){
                 $scope.showAlert(res.data);
+            }, function(err) {
+                $scope.showAlert('Error: ' + JSON.stringify(err.status));
             });
         }
     };
@@ -208,6 +214,7 @@ angular.module('linked-data-project.controllers', [])
     };
     
     function checkParams(){
+        // Setting form id & searching by that id when page loads
         $scope.form.id = $stateParams.recordId;
         $scope.searchByID();
     }
@@ -222,25 +229,28 @@ angular.module('linked-data-project.controllers', [])
     var port = '11000';
 
     $scope.delete = function(record) {
-        alert('Delete Item: ' + record.ID);
-        $scope.records.splice($scope.records.indexOf(item), 1);
-    };
-
-    $scope.onRecordDelete = function(item) {
-        $scope.records.splice($scope.records.indexOf(item), 1);
+        // Removing from record from list & array
+        $scope.records.splice($scope.records.indexOf(record), 1);
+        // Deleting by ID get request, dataset 1
+        $http.get('http://' + ip + ':' + port + '/del-d1/' + record.ID).then(function (res){
+            $scope.showAlert(res.data);
+        }, function(err) {
+            $scope.showAlert('Error: ' + JSON.stringify(err.status));
+        });
     };
     
+    // Array for storing list of records retrieved from database
     $scope.records = [];
     
     getAllRecords = function() {
-        
         // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
         $http.get('http://' + ip + ':' + port + '/get-d1/').then(function(res) {
-
+            // Storing records in array
             $scope.records = res.data;
             $scope.records = $scope.records[0];
-
+            // Striping brackets
         }, function(err) {
+            $scope.showAlert('Error: ' + JSON.stringify(err.status));
         });
     }
     
@@ -267,7 +277,7 @@ angular.module('linked-data-project.controllers', [])
         
         // If not a number then set searchID to 1
         if(isNaN(parseFloat(searchID)) && !isFinite(searchID)){
-            $scope.showAlert('ID is a number!');
+            $scope.showAlert('ID is a Number!');
         }
         else{
             // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
@@ -283,6 +293,7 @@ angular.module('linked-data-project.controllers', [])
                     $scope.form.demand = res.data.Demand;
                 }
             }, function(err) {
+                $scope.showAlert('Error: ' + JSON.stringify(err.status));
             })
         }  
     };
@@ -292,6 +303,8 @@ angular.module('linked-data-project.controllers', [])
         // Posts data from the front end to the API, passes Time & Demand variables
         $http.post('http://' + ip + ':' + port + '/add-d2/', {time : $scope.form.time, demand : $scope.form.demand}).then(function (res){
             $scope.showAlert(res.data);
+        }, function(err) {
+            $scope.showAlert('Error: ' + JSON.stringify(err.status));
         });
     };
     
@@ -300,8 +313,9 @@ angular.module('linked-data-project.controllers', [])
         // Posts data from the front end to the API with ID to update a specific record
         $http.post('http://' + ip + ':' + port + '/update-d2/', {id : $scope.form.id, time : $scope.form.time, demand : $scope.form.demand}).then(function (res){
             $scope.showAlert(res.data);
+        }, function(err) {
+            $scope.showAlert('Error: ' + JSON.stringify(err.status));
         });
-        
     };
     
     // Delete by id function
@@ -311,12 +325,14 @@ angular.module('linked-data-project.controllers', [])
         
         // If not a number then set searchID to 1
         if(isNaN(parseFloat(deleteID)) && !isFinite(deleteID)){
-            $scope.showAlert('ID is a number!');
+            $scope.showAlert('ID is a Number!');
         }
         else{   
             // Send get request to delete specific record
             $http.get('http://' + ip + ':' + port + '/del-d2/' + deleteID).then(function (res){
                 $scope.showAlert(res.data);
+            }, function(err) {
+                $scope.showAlert('Error: ' + JSON.stringify(err.status));
             });
         }
     };
@@ -330,6 +346,7 @@ angular.module('linked-data-project.controllers', [])
     };
     
     function checkParams(){
+        // Setting form id & searching by that id when page loads
         $scope.form.id = $stateParams.recordId;
         $scope.searchByID();
     }
@@ -339,30 +356,30 @@ angular.module('linked-data-project.controllers', [])
 
 .controller('DataSetCtrlList2', function($scope, $http, $timeout) {
   
-  // Connection details
+    // Connection details
     var ip = 'localhost';
     var port = '11000';
 
     $scope.delete = function(record) {
-        alert('Delete Item: ' + record.ID);
-        $scope.records.splice($scope.records.indexOf(item), 1);
-    };
-
-    $scope.onRecordDelete = function(item) {
-        $scope.records.splice($scope.records.indexOf(item), 1);
+        // Removing from record from list & array
+        $scope.records.splice($scope.records.indexOf(record), 1);
+        // Deleting by ID get request, dataset 2
+        $http.get('http://' + ip + ':' + port + '/del-d2/' + record.ID).then(function (res){
+            $scope.showAlert(res.data);
+        });
     };
     
+    // Array for storing list of records retrieved from database
     $scope.records = [];
     
     getAllRecords = function(recLimit) {
-        
         // Cors must be enabled to use local resources, there is a plugin for chrome to enable cors
         // I limited the query here because there is about 500000 rows in the database
         $http.get('http://' + ip + ':' + port + '/get-d2-limit/' + recLimit).then(function(res) {
-
+            // Storing records in array
             $scope.records = res.data;
+            // Striping brackets
             $scope.records = $scope.records[0];
-
         }, function(err) {
         });
     }

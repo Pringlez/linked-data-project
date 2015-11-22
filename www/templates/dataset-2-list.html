@@ -4,7 +4,7 @@
         <ion-item ng-repeat="record in records" 
                   item="record"
                   href="#/app/dataset-2/{{record.ID}}" class="item-remove-animate">
-          Record {{ record.ID }} - {{ record.Time }} - {{ record.Demand }}
+          Record ID {{ record.ID }} - {{ record.Time }} - {{ record.Demand }}
           <ion-option-button class="button-assertive" ng-click="delete(record)">Delete</ion-option-button>
         </ion-item>
       </ion-list>
